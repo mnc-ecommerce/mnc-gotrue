@@ -1,4 +1,5 @@
 .env*
+docker.env*
 vendor/
 gotrue
 gotrue-arm64

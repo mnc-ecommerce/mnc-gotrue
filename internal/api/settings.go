@@ -22,6 +22,7 @@ type ProviderSettings struct {
 	Email     bool `json:"email"`
 	Phone     bool `json:"phone"`
 	Zoom      bool `json:"zoom"`
+	Cognito   bool `json:"cognito"`
 }
 
 type Settings struct {
@@ -58,6 +59,7 @@ func (a *API) Settings(w http.ResponseWriter, r *http.Request) error {
 			Email:     config.External.Email.Enabled,
 			Phone:     config.External.Phone.Enabled,
 			Zoom:      config.External.Zoom.Enabled,
+			Cognito:   config.External.Cognito.Enabled,
 		},
 
 		DisableSignup:     config.DisableSignup,
