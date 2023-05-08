@@ -7,8 +7,8 @@ on:
 
 env:
   AWS_REGION: ap-southeast-1
-  ECR_REPO: function
-  S3_BUCKET: s3://am-spin/services/function/
+  ECR_REPO: mncgotrue
+  S3_BUCKET: s3://am-spin/services/mncgotrue/
 
 jobs:
   build:
