@@ -51,6 +51,11 @@ func TestSmsProvider(t *testing.T) {
 					ApiKey: "test_api_key",
 					Sender: "test_sender",
 				},
+				FlashMobile: conf.FlashMobileProviderConfiguration{
+					User:    "test_user",
+					Pass:    "test_pass",
+					Masking: "test_masking",
+				},
 			},
 		},
 	}
@@ -212,5 +217,35 @@ func (ts *SmsProviderTestSuite) TestTextLocalSendSms() {
 	})
 
 	err = textlocalProvider.SendSms(phone, message)
+	require.NoError(ts.T(), err)
+}
+
+func (ts *SmsProviderTestSuite) TestFlashMobileSendSms() {
+	defer gock.Off()
+	provider, err := NewFlashMobileProvider(ts.Config.Sms.FlashMobile)
+	require.NoError(ts.T(), err)
+
+	flashMobileProvider, ok := provider.(*FlashMobileProvider)
+	require.Equal(ts.T(), true, ok)
+
+	phone := "123456789"
+	message := "This is the sms code: 123456"
+
+	requestURL, _ := url.Parse(flashMobileProvider.APIPath)
+	urlQuery := requestURL.Query()
+	urlQuery.Set("uid", flashMobileProvider.Config.User)
+	urlQuery.Set("password", flashMobileProvider.Config.Pass)
+	urlQuery.Set("sender", flashMobileProvider.Config.Masking)
+	urlQuery.Set("phone", phone)
+	urlQuery.Set("text", message)
+	requestURL.RawQuery = urlQuery.Encode()
+
+	gock.New(flashMobileProvider.APIPath).Get(requestURL.RawPath).Reply(200).JSON(FlashMobileResponse{
+		Status:  true,
+		Message: "Success",
+		MsgID:   "1234",
+	})
+
+	err = flashMobileProvider.SendSms(phone, message)
 	require.NoError(ts.T(), err)
 }

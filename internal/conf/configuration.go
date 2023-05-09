@@ -201,6 +201,7 @@ type SmsProviderConfiguration struct {
 	Messagebird  MessagebirdProviderConfiguration `json:"messagebird"`
 	Textlocal    TextlocalProviderConfiguration   `json:"textlocal"`
 	Vonage       VonageProviderConfiguration      `json:"vonage"`
+	FlashMobile  FlashMobileProviderConfiguration `json:"flashmobile"`
 }
 
 type TwilioProviderConfiguration struct {
@@ -223,6 +224,12 @@ type VonageProviderConfiguration struct {
 	ApiKey    string `json:"api_key" split_words:"true"`
 	ApiSecret string `json:"api_secret" split_words:"true"`
 	From      string `json:"from" split_words:"true"`
+}
+
+type FlashMobileProviderConfiguration struct {
+	User    string `json:"user" split_words:"true"`
+	Pass    string `json:"pass" split_words:"true"`
+	Masking string `json:"masking" split_words:"true"`
 }
 
 type CaptchaConfiguration struct {
@@ -502,6 +509,19 @@ func (t *VonageProviderConfiguration) Validate() error {
 	}
 	if t.From == "" {
 		return errors.New("missing Vonage 'from' parameter")
+	}
+	return nil
+}
+
+func (t *FlashMobileProviderConfiguration) Validate() error {
+	if t.User == "" {
+		return errors.New("missing Flash Mobile API user")
+	}
+	if t.Pass == "" {
+		return errors.New("missing Flash Mobile API pass")
+	}
+	if t.Masking == "" {
+		return errors.New("missing Flash Mobile masking")
 	}
 	return nil
 }
