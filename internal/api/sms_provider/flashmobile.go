@@ -20,7 +20,7 @@ type FlashMobileProvider struct {
 }
 
 type FlashMobileResponse struct {
-	Status  bool   `json:"status"`
+	Status  int    `json:"status"`
 	Message string `json:"message"`
 	MsgID   string `json:"msg_id"`
 }
@@ -77,7 +77,7 @@ func (t *FlashMobileProvider) SendSms(phone string, message string) error {
 		return derr
 	}
 
-	if !resp.Status {
+	if resp.Status == 0 {
 		return fmt.Errorf("textlocal error: %v", resp.Message)
 	}
 

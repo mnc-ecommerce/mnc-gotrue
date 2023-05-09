@@ -241,7 +241,7 @@ func (ts *SmsProviderTestSuite) TestFlashMobileSendSms() {
 	requestURL.RawQuery = urlQuery.Encode()
 
 	gock.New(flashMobileProvider.APIPath).Get(requestURL.RawPath).Reply(200).JSON(FlashMobileResponse{
-		Status:  true,
+		Status:  1,
 		Message: "Success",
 		MsgID:   "1234",
 	})
