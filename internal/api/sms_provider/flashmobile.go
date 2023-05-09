@@ -31,7 +31,7 @@ func NewFlashMobileProvider(config conf.FlashMobileProviderConfiguration) (SmsPr
 		return nil, err
 	}
 
-	apiPath := defaultFlashMobileApiBase + "/send"
+	apiPath := defaultFlashMobileApiBase + "/v1/send"
 	return &FlashMobileProvider{
 		Config:  &config,
 		APIPath: apiPath,
