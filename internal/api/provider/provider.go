@@ -14,6 +14,11 @@ import (
 	"golang.org/x/oauth2"
 )
 
+const (
+	platformIos     = "android"
+	platformAndroid = "ios"
+)
+
 var defaultTimeout time.Duration = time.Second * 10
 
 func init() {

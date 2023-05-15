@@ -47,8 +47,9 @@ func (a *API) ExternalProviderRedirect(w http.ResponseWriter, r *http.Request) e
 	scopes := query.Get("scopes")
 	codeChallenge := query.Get("code_challenge")
 	codeChallengeMethod := query.Get("code_challenge_method")
+	platformType := query.Get("platform")
 
-	p, err := a.Provider(ctx, providerType, scopes)
+	p, err := a.Provider(ctx, providerType, scopes, platformType)
 	if err != nil {
 		return badRequestError("Unsupported provider: %+v", err).WithInternalError(err)
 	}
@@ -507,7 +508,7 @@ func (a *API) loadExternalState(ctx context.Context, state string) (context.Cont
 }
 
 // Provider returns a Provider interface for the given name.
-func (a *API) Provider(ctx context.Context, name string, scopes string) (provider.Provider, error) {
+func (a *API) Provider(ctx context.Context, name string, scopes, platformType string) (provider.Provider, error) {
 	config := a.config
 	name = strings.ToLower(name)
 
@@ -525,13 +526,13 @@ func (a *API) Provider(ctx context.Context, name string, scopes string) (provide
 	case "gitlab":
 		return provider.NewGitlabProvider(config.External.Gitlab, scopes)
 	case "google":
-		return provider.NewGoogleProvider(config.External.Google, scopes)
+		return provider.NewGoogleProvider(config.External.Google, scopes, platformType)
 	case "keycloak":
 		return provider.NewKeycloakProvider(config.External.Keycloak, scopes)
 	case "linkedin":
 		return provider.NewLinkedinProvider(config.External.Linkedin, scopes)
 	case "facebook":
-		return provider.NewFacebookProvider(config.External.Facebook, scopes)
+		return provider.NewFacebookProvider(config.External.Facebook, scopes, platformType)
 	case "notion":
 		return provider.NewNotionProvider(config.External.Notion)
 	case "spotify":
