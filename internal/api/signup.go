@@ -2,6 +2,9 @@ package api
 
 import (
 	"context"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -380,10 +383,16 @@ func (a *API) signupNewUser(ctx context.Context, conn *storage.Connection, param
 	fmt.Println("a.cognito", a.cognito)
 	fmt.Println(a.config.Cognito)
 	if err == nil && a.cognito != nil {
+		// This is the part where we generate the hash.
+		mac := hmac.New(sha256.New, []byte(a.config.Cognito.ClientSecret))
+		mac.Write([]byte(params.Email + a.config.Cognito.ClientID))
+
+		secretHash := base64.StdEncoding.EncodeToString(mac.Sum(nil))
 		user := &cognito.SignUpInput{
-			Username: aws.String(params.Email),
-			Password: aws.String(params.Password),
-			ClientId: aws.String(a.config.Cognito.ClientID),
+			Username:   aws.String(params.Email),
+			Password:   aws.String(params.Password),
+			ClientId:   aws.String(a.config.Cognito.ClientID),
+			SecretHash: aws.String(secretHash),
 			UserAttributes: []*cognito.AttributeType{
 				{
 					Name:  aws.String("phone_number"),
