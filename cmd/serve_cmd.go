@@ -32,7 +32,12 @@ func serve(ctx context.Context) {
 	}
 	defer db.Close()
 
-	api := api.NewAPIWithVersion(ctx, config, db, utilities.Version)
+	cognito, err := conf.ConnectCognito(config)
+	if err != nil {
+		logrus.Printf("error opening cognito: %+v", err)
+	}
+
+	api := api.NewAPIWithVersion(ctx, config, db, utilities.Version, cognito)
 
 	addr := net.JoinHostPort(config.API.Host, config.API.Port)
 	logrus.Infof("GoTrue API started on: %s", addr)

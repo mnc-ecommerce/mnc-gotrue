@@ -122,7 +122,8 @@ type GlobalConfiguration struct {
 		Domain   string `json:"domain"`
 		Duration int    `json:"duration"`
 	} `json:"cookies"`
-	SAML SAMLConfiguration `json:"saml"`
+	SAML    SAMLConfiguration `json:"saml"`
+	Cognito CognitoConfiguration
 }
 
 // EmailContentConfiguration holds the configuration for emails, both subjects and template URLs.
@@ -524,4 +525,10 @@ func (t *FlashMobileProviderConfiguration) Validate() error {
 		return errors.New("missing Flash Mobile masking")
 	}
 	return nil
+}
+
+type CognitoConfiguration struct {
+	UserPoolID   string `json:"url" envconfig:"USER_POOL_ID"`
+	ClientID     string `json:"url" envconfig:"CLIENT_ID"`
+	ClientSecret string `json:"url" envconfig:"CLIENT_SECRET"`
 }

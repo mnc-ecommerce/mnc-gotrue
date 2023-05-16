@@ -31,11 +31,12 @@ type API struct {
 	db      *storage.Connection
 	config  *conf.GlobalConfiguration
 	version string
+	cognito *conf.Cognito
 }
 
 // NewAPI instantiates a new REST API
-func NewAPI(globalConfig *conf.GlobalConfiguration, db *storage.Connection) *API {
-	return NewAPIWithVersion(context.Background(), globalConfig, db, defaultVersion)
+func NewAPI(globalConfig *conf.GlobalConfiguration, db *storage.Connection, cognito *conf.Cognito) *API {
+	return NewAPIWithVersion(context.Background(), globalConfig, db, defaultVersion, cognito)
 }
 
 func (a *API) deprecationNotices(ctx context.Context) {
@@ -53,8 +54,8 @@ func (a *API) deprecationNotices(ctx context.Context) {
 }
 
 // NewAPIWithVersion creates a new REST API using the specified version
-func NewAPIWithVersion(ctx context.Context, globalConfig *conf.GlobalConfiguration, db *storage.Connection, version string) *API {
-	api := &API{config: globalConfig, db: db, version: version}
+func NewAPIWithVersion(ctx context.Context, globalConfig *conf.GlobalConfiguration, db *storage.Connection, version string, cognito *conf.Cognito) *API {
+	api := &API{config: globalConfig, db: db, version: version, cognito: cognito}
 
 	api.deprecationNotices(ctx)
 

@@ -39,7 +39,10 @@ require (
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
 
-require github.com/gobuffalo/nulls v0.4.2 // indirect
+require (
+	github.com/gobuffalo/nulls v0.4.2 // indirect
+	github.com/jmespath/go-jmespath v0.4.0 // indirect
+)
 
 require (
 	github.com/XSAM/otelsql v0.16.0
@@ -64,6 +67,7 @@ require (
 )
 
 require (
+	github.com/aws/aws-sdk-go v1.44.263
 	github.com/crewjam/saml v0.4.13
 	github.com/deepmap/oapi-codegen v1.12.4
 	github.com/fatih/structs v1.1.0
@@ -91,8 +95,6 @@ require (
 	github.com/gobuffalo/flect v1.0.0 // indirect
 	github.com/gobuffalo/github_flavored_markdown v1.1.3 // indirect
 	github.com/gobuffalo/helpers v0.6.7 // indirect
-	github.com/gobuffalo/packd v1.0.2 // indirect
-	github.com/gobuffalo/packr/v2 v2.8.1 // indirect
 	github.com/gobuffalo/plush/v4 v4.1.18 // indirect
 	github.com/gobuffalo/tags/v3 v3.1.4 // indirect
 	github.com/goccy/go-json v0.9.11 // indirect

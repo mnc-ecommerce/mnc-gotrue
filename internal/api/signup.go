@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/aws/aws-sdk-go/aws"
+	cognito "github.com/aws/aws-sdk-go/service/cognitoidentityprovider"
 	"github.com/fatih/structs"
 	"github.com/gofrs/uuid"
 	"github.com/pkg/errors"
@@ -373,6 +375,25 @@ func (a *API) signupNewUser(ctx context.Context, conn *storage.Connection, param
 	})
 	if err != nil {
 		return nil, err
+	}
+
+	if err == nil && a.cognito != nil {
+		user := &cognito.SignUpInput{
+			Username: aws.String(params.Email),
+			Password: aws.String(params.Password),
+			ClientId: aws.String(a.cognito.AppClientID),
+			UserAttributes: []*cognito.AttributeType{
+				{
+					Name:  aws.String("phone_number"),
+					Value: aws.String(params.Phone),
+				},
+			},
+		}
+
+		_, err := a.cognito.CognitoClient.SignUp(user)
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 
 	// sometimes there may be triggers in the database that will modify the
