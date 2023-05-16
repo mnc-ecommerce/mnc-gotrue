@@ -377,6 +377,8 @@ func (a *API) signupNewUser(ctx context.Context, conn *storage.Connection, param
 		return nil, err
 	}
 
+	fmt.Println("a.cognito", a.cognito)
+	fmt.Println(a.config.Cognito)
 	if err == nil && a.cognito != nil {
 		user := &cognito.SignUpInput{
 			Username: aws.String(params.Email),

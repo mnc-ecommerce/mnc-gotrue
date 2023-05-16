@@ -11,7 +11,7 @@ type Cognito struct {
 }
 
 func ConnectCognito(config *GlobalConfiguration) (*Cognito, error) {
-	conf := &aws.Config{Region: aws.String("us-southeast-1")}
+	conf := &aws.Config{Region: aws.String("ap-southeast-1")}
 	sess, err := session.NewSession(conf)
 	if err != nil {
 		return nil, err
