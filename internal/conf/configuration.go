@@ -122,8 +122,8 @@ type GlobalConfiguration struct {
 		Domain   string `json:"domain"`
 		Duration int    `json:"duration"`
 	} `json:"cookies"`
-	SAML    SAMLConfiguration `json:"saml"`
-	Cognito CognitoConfiguration
+	SAML    SAMLConfiguration    `json:"saml"`
+	Cognito CognitoConfiguration `json:"cognito"`
 }
 
 // EmailContentConfiguration holds the configuration for emails, both subjects and template URLs.
@@ -528,7 +528,7 @@ func (t *FlashMobileProviderConfiguration) Validate() error {
 }
 
 type CognitoConfiguration struct {
-	UserPoolID   string `json:"url" envconfig:"USER_POOL_ID"`
-	ClientID     string `json:"url" envconfig:"CLIENT_ID"`
-	ClientSecret string `json:"url" envconfig:"CLIENT_SECRET"`
+	UserPoolID   string `json:"user_pool_id" envconfig:"user_pool_id"`
+	ClientID     string `json:"client_id" envconfig:"client_id"`
+	ClientSecret string `json:"client_secret" envconfig:"client_secret"`
 }

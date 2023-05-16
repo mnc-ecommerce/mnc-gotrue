@@ -381,7 +381,7 @@ func (a *API) signupNewUser(ctx context.Context, conn *storage.Connection, param
 		user := &cognito.SignUpInput{
 			Username: aws.String(params.Email),
 			Password: aws.String(params.Password),
-			ClientId: aws.String(a.cognito.AppClientID),
+			ClientId: aws.String(a.config.Cognito.ClientID),
 			UserAttributes: []*cognito.AttributeType{
 				{
 					Name:  aws.String("phone_number"),

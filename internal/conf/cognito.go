@@ -18,10 +18,7 @@ func ConnectCognito(config *GlobalConfiguration) (*Cognito, error) {
 	}
 
 	conn := Cognito{
-		CognitoClient:   cognito.New(sess),
-		UserPoolID:      "ap-southeast-1_nwv3wd7Hy",
-		AppClientID:     "3074gf3454m87ptt8vi28v1qdl",
-		AppClientSecret: "17qcsitu42gnqodf8kpe47ft37m6plqqcjahnkc5hv5qr0hs5va",
+		CognitoClient: cognito.New(sess),
 	}
 
 	return &conn, nil
