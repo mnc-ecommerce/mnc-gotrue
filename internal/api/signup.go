@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -380,20 +381,23 @@ func (a *API) signupNewUser(ctx context.Context, conn *storage.Connection, param
 		return nil, err
 	}
 
-	fmt.Println("a.cognito", a.cognito)
-	fmt.Println(a.config.Cognito)
 	if err == nil && a.cognito != nil {
+		usernameCognito := strings.Split(params.Email, "@")[0]
 		// This is the part where we generate the hash.
 		mac := hmac.New(sha256.New, []byte(a.config.Cognito.ClientSecret))
-		mac.Write([]byte(params.Email + a.config.Cognito.ClientID))
+		mac.Write([]byte(usernameCognito + a.config.Cognito.ClientID))
 
 		secretHash := base64.StdEncoding.EncodeToString(mac.Sum(nil))
 		user := &cognito.SignUpInput{
-			Username:   aws.String(params.Email),
+			Username:   aws.String(usernameCognito),
 			Password:   aws.String(params.Password),
 			ClientId:   aws.String(a.config.Cognito.ClientID),
 			SecretHash: aws.String(secretHash),
 			UserAttributes: []*cognito.AttributeType{
+				{
+					Name:  aws.String("email"),
+					Value: aws.String(params.Email),
+				},
 				{
 					Name:  aws.String("phone_number"),
 					Value: aws.String(params.Phone),
