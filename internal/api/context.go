@@ -29,6 +29,7 @@ const (
 	oauthVerifierKey        = contextKey("oauth_verifier")
 	ssoProviderKey          = contextKey("sso_provider")
 	flowStateKey            = contextKey("flow_state_id")
+	platformKey             = contextKey("platform")
 )
 
 // withToken adds the JWT token to the context.
@@ -130,6 +131,10 @@ func withFlowStateID(ctx context.Context, FlowStateID string) context.Context {
 	return context.WithValue(ctx, flowStateKey, FlowStateID)
 }
 
+func withPlatform(ctx context.Context, Platform string) context.Context {
+	return context.WithValue(ctx, platformKey, Platform)
+}
+
 func getFlowStateID(ctx context.Context) string {
 	obj := ctx.Value(flowStateKey)
 	if obj == nil {
@@ -155,6 +160,15 @@ func withExternalProviderType(ctx context.Context, id string) context.Context {
 // getExternalProviderType reads the request ID from the context.
 func getExternalProviderType(ctx context.Context) string {
 	obj := ctx.Value(externalProviderTypeKey)
+	if obj == nil {
+		return ""
+	}
+
+	return obj.(string)
+}
+
+func getPlatform(ctx context.Context) string {
+	obj := ctx.Value(platformKey)
 	if obj == nil {
 		return ""
 	}
