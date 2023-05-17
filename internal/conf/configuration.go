@@ -19,14 +19,12 @@ const defaultFlowStateExpiryDuration time.Duration = 300 * time.Second
 
 // OAuthProviderConfiguration holds all config related to external account providers.
 type OAuthProviderConfiguration struct {
-	ClientID           string `json:"client_id" split_words:"true"`
-	Secret             string `json:"secret"`
-	RedirectURI        string `json:"redirect_uri" split_words:"true"`
-	URL                string `json:"url"`
-	ApiURL             string `json:"api_url" split_words:"true"`
-	Enabled            bool   `json:"enabled"`
-	AndroidRedirectURI string `json:"android_redirect_uri" split_words:"true"`
-	IosRedirectURI     string `json:"ios_redirect_uri" split_words:"true"`
+	ClientID    string `json:"client_id" split_words:"true"`
+	Secret      string `json:"secret"`
+	RedirectURI string `json:"redirect_uri" split_words:"true"`
+	URL         string `json:"url"`
+	ApiURL      string `json:"api_url" split_words:"true"`
+	Enabled     bool   `json:"enabled"`
 }
 
 type EmailProviderConfiguration struct {
@@ -109,6 +107,8 @@ type GlobalConfiguration struct {
 	RateLimitSso          float64 `split_words:"true" default:"30"`
 
 	SiteURL           string   `json:"site_url" split_words:"true" required:"true"`
+	AndroidSiteURL    string   `json:"android_site_url" split_words:"true" required:"true"`
+	IosSiteURL        string   `json:"ios_site_url" split_words:"true" required:"true"`
 	URIAllowList      []string `json:"uri_allow_list" split_words:"true"`
 	URIAllowListMap   map[string]glob.Glob
 	PasswordMinLength int                      `json:"password_min_length" split_words:"true"`

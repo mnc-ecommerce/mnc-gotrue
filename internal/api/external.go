@@ -225,7 +225,7 @@ func (a *API) internalExternalProviderCallback(w http.ResponseWriter, r *http.Re
 		return err
 	}
 
-	rurl := a.getExternalRedirectURL(r, providerType, platform)
+	rurl := a.getExternalRedirectURL(r, platform)
 	if flowState != nil {
 		// This means that the callback is using PKCE
 		// Set the flowState.AuthCode to the query param here
@@ -567,7 +567,7 @@ func (a *API) redirectErrors(handler apiHandler, w http.ResponseWriter, r *http.
 	err := handler(w, r)
 	if err != nil {
 		q := getErrorQueryString(err, errorID, log)
-		http.Redirect(w, r, a.getExternalRedirectURL(r, "", "")+"?"+q.Encode(), http.StatusFound)
+		http.Redirect(w, r, a.getExternalRedirectURL(r, "")+"?"+q.Encode(), http.StatusFound)
 	}
 }
 
@@ -611,32 +611,18 @@ func getErrorQueryString(err error, errorID string, log logrus.FieldLogger) *url
 	return &q
 }
 
-func (a *API) getExternalRedirectURL(r *http.Request, providerType, platform string) string {
+func (a *API) getExternalRedirectURL(r *http.Request, platform string) string {
 	ctx := r.Context()
 	config := a.config
 
 	switch platform {
 	case "android":
-		switch providerType {
-		case "google":
-			if config.External.Google.AndroidRedirectURI != "" {
-				return config.External.Google.AndroidRedirectURI
-			}
-		case "facebook":
-			if config.External.Facebook.AndroidRedirectURI != "" {
-				return config.External.Facebook.AndroidRedirectURI
-			}
+		if config.AndroidSiteURL != "" {
+			return config.AndroidSiteURL
 		}
 	case "ios":
-		switch providerType {
-		case "google":
-			if config.External.Google.IosRedirectURI != "" {
-				return config.External.Google.IosRedirectURI
-			}
-		case "facebook":
-			if config.External.Facebook.IosRedirectURI != "" {
-				return config.External.Facebook.IosRedirectURI
-			}
+		if config.IosSiteURL != "" {
+			return config.IosSiteURL
 		}
 	default:
 		if config.External.RedirectURL != "" {
