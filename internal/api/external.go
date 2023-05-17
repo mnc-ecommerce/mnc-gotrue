@@ -28,6 +28,7 @@ type ExternalProviderClaims struct {
 	InviteToken string `json:"invite_token,omitempty"`
 	Referrer    string `json:"referrer,omitempty"`
 	FlowStateID string `json:"flow_state_id"`
+	Platform    string `json:"platform"`
 }
 
 // ExternalSignupParams are the parameters the Signup endpoint accepts
@@ -47,6 +48,7 @@ func (a *API) ExternalProviderRedirect(w http.ResponseWriter, r *http.Request) e
 	scopes := query.Get("scopes")
 	codeChallenge := query.Get("code_challenge")
 	codeChallengeMethod := query.Get("code_challenge_method")
+	platform := query.Get("platform")
 
 	p, err := a.Provider(ctx, providerType, scopes)
 	if err != nil {
@@ -100,6 +102,7 @@ func (a *API) ExternalProviderRedirect(w http.ResponseWriter, r *http.Request) e
 		InviteToken: inviteToken,
 		Referrer:    redirectURL,
 		FlowStateID: flowStateID,
+		Platform:    platform,
 	})
 	tokenString, err := token.SignedString([]byte(config.JWT.Secret))
 	if err != nil {
@@ -149,6 +152,7 @@ func (a *API) internalExternalProviderCallback(w http.ResponseWriter, r *http.Re
 	ctx := r.Context()
 	db := a.db.WithContext(ctx)
 	config := a.config
+	platform := getPlatform(ctx)
 
 	providerType := getExternalProviderType(ctx)
 	var userData *provider.UserProvidedData
@@ -221,7 +225,7 @@ func (a *API) internalExternalProviderCallback(w http.ResponseWriter, r *http.Re
 		return err
 	}
 
-	rurl := a.getExternalRedirectURL(r)
+	rurl := a.getExternalRedirectURL(r, providerType, platform)
 	if flowState != nil {
 		// This means that the callback is using PKCE
 		// Set the flowState.AuthCode to the query param here
@@ -502,6 +506,9 @@ func (a *API) loadExternalState(ctx context.Context, state string) (context.Cont
 	if claims.FlowStateID != "" {
 		ctx = withFlowStateID(ctx, claims.FlowStateID)
 	}
+	if claims.Platform != "" {
+		ctx = withPlatform(ctx, claims.Platform)
+	}
 	ctx = withExternalProviderType(ctx, claims.Provider)
 	return withSignature(ctx, state), nil
 }
@@ -560,7 +567,7 @@ func (a *API) redirectErrors(handler apiHandler, w http.ResponseWriter, r *http.
 	err := handler(w, r)
 	if err != nil {
 		q := getErrorQueryString(err, errorID, log)
-		http.Redirect(w, r, a.getExternalRedirectURL(r)+"?"+q.Encode(), http.StatusFound)
+		http.Redirect(w, r, a.getExternalRedirectURL(r, "", "")+"?"+q.Encode(), http.StatusFound)
 	}
 }
 
@@ -604,12 +611,39 @@ func getErrorQueryString(err error, errorID string, log logrus.FieldLogger) *url
 	return &q
 }
 
-func (a *API) getExternalRedirectURL(r *http.Request) string {
+func (a *API) getExternalRedirectURL(r *http.Request, providerType, platform string) string {
 	ctx := r.Context()
 	config := a.config
-	if config.External.RedirectURL != "" {
-		return config.External.RedirectURL
+
+	switch platform {
+	case "android":
+		switch providerType {
+		case "google":
+			if config.External.Google.AndroidRedirectURI != "" {
+				return config.External.Google.AndroidRedirectURI
+			}
+		case "facebook":
+			if config.External.Facebook.AndroidRedirectURI != "" {
+				return config.External.Facebook.AndroidRedirectURI
+			}
+		}
+	case "ios":
+		switch providerType {
+		case "google":
+			if config.External.Google.IosRedirectURI != "" {
+				return config.External.Google.IosRedirectURI
+			}
+		case "facebook":
+			if config.External.Facebook.IosRedirectURI != "" {
+				return config.External.Facebook.IosRedirectURI
+			}
+		}
+	default:
+		if config.External.RedirectURL != "" {
+			return config.External.RedirectURL
+		}
 	}
+
 	if er := getExternalReferrer(ctx); er != "" {
 		return er
 	}
