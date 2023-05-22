@@ -82,11 +82,6 @@ func (m TemplateMailer) ValidateEmail(email string) error {
 func (m *TemplateMailer) InviteMail(user *models.User, otp, referrerURL string) error {
 	redirectParam := encodeRedirectParam(referrerURL)
 
-	// force default otp for qa automation
-	if user.GetEmail() == m.Config.AutomationEmail {
-		otp = m.Config.AutomationOTP
-	}
-
 	url, err := getSiteURL(referrerURL, m.Config.API.ExternalURL, m.Config.Mailer.URLPaths.Invite, "token="+user.ConfirmationToken+"&type=invite"+redirectParam)
 	if err != nil {
 		return err
@@ -117,12 +112,6 @@ func (m *TemplateMailer) ConfirmationMail(user *models.User, otp, referrerURL st
 	if err != nil {
 		return err
 	}
-
-	// force default otp for qa automation
-	if user.GetEmail() == m.Config.AutomationEmail {
-		otp = m.Config.AutomationOTP
-	}
-
 	data := map[string]interface{}{
 		"SiteURL":         m.Config.SiteURL,
 		"ConfirmationURL": url,
@@ -143,12 +132,6 @@ func (m *TemplateMailer) ConfirmationMail(user *models.User, otp, referrerURL st
 
 // ReauthenticateMail sends a reauthentication mail to an authenticated user
 func (m *TemplateMailer) ReauthenticateMail(user *models.User, otp string) error {
-
-	// force default otp for qa automation
-	if user.GetEmail() == m.Config.AutomationEmail {
-		otp = m.Config.AutomationOTP
-	}
-
 	data := map[string]interface{}{
 		"SiteURL": m.Config.SiteURL,
 		"Email":   user.Email,
@@ -240,11 +223,6 @@ func (m *TemplateMailer) EmailChangeMail(user *models.User, otpNew, otpCurrent, 
 
 // RecoveryMail sends a password recovery mail
 func (m *TemplateMailer) RecoveryMail(user *models.User, otp, referrerURL string) error {
-	// force default otp for qa automation
-	if user.GetEmail() == m.Config.AutomationEmail {
-		otp = m.Config.AutomationOTP
-	}
-
 	redirectParam := encodeRedirectParam(referrerURL)
 	url, err := getSiteURL(referrerURL, m.Config.API.ExternalURL, m.Config.Mailer.URLPaths.Recovery, "token="+user.RecoveryToken+"&type=recovery"+redirectParam)
 	if err != nil {
@@ -270,11 +248,6 @@ func (m *TemplateMailer) RecoveryMail(user *models.User, otp, referrerURL string
 
 // MagicLinkMail sends a login link mail
 func (m *TemplateMailer) MagicLinkMail(user *models.User, otp, referrerURL string) error {
-	// force default otp for qa automation
-	if user.GetEmail() == m.Config.AutomationEmail {
-		otp = m.Config.AutomationOTP
-	}
-
 	redirectParam := encodeRedirectParam(referrerURL)
 	fragment := "token=" + user.RecoveryToken + "&type=magiclink" + redirectParam
 	url, err := getSiteURL(referrerURL, m.Config.API.ExternalURL, m.Config.Mailer.URLPaths.Recovery, fragment)

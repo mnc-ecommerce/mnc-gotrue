@@ -238,6 +238,12 @@ func sendConfirmation(tx *storage.Connection, u *models.User, mailer mailer.Mail
 	if err != nil {
 		return err
 	}
+
+	// force default otp for qa automation
+	if u.GetEmail() == mailer.Conf().AutomationEmail {
+		otp = mailer.Conf().AutomationOTP
+	}
+
 	token := fmt.Sprintf("%x", sha256.Sum224([]byte(u.GetEmail()+otp)))
 	u.ConfirmationToken = addFlowPrefixToToken(token, flowType)
 	now := time.Now()
@@ -278,6 +284,12 @@ func (a *API) sendPasswordRecovery(tx *storage.Connection, u *models.User, maile
 	if err != nil {
 		return err
 	}
+
+	// force default otp for qa automation
+	if u.GetEmail() == mailer.Conf().AutomationEmail {
+		otp = mailer.Conf().AutomationOTP
+	}
+
 	token := fmt.Sprintf("%x", sha256.Sum224([]byte(u.GetEmail()+otp)))
 	u.RecoveryToken = addFlowPrefixToToken(token, flowType)
 	now := time.Now()
@@ -300,6 +312,12 @@ func (a *API) sendReauthenticationOtp(tx *storage.Connection, u *models.User, ma
 	if err != nil {
 		return err
 	}
+
+	// force default otp for qa automation
+	if u.GetEmail() == mailer.Conf().AutomationEmail {
+		otp = mailer.Conf().AutomationOTP
+	}
+
 	u.ReauthenticationToken = fmt.Sprintf("%x", sha256.Sum224([]byte(u.GetEmail()+otp)))
 	if err != nil {
 		return err

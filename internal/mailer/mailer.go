@@ -23,6 +23,7 @@ type Mailer interface {
 	ReauthenticateMail(user *models.User, otp string) error
 	ValidateEmail(email string) error
 	GetEmailActionLink(user *models.User, actionType, referrerURL string) (string, error)
+	Conf() *conf.GlobalConfiguration
 }
 
 // NewMailer returns a new gotrue mailer
@@ -83,4 +84,8 @@ func getSiteURL(referrerURL, siteURL, filepath, fragment string) (string, error)
 	}
 	site.RawQuery = fragment
 	return site.String(), nil
+}
+
+func (m *TemplateMailer) Conf() *conf.GlobalConfiguration {
+	return m.Config
 }
