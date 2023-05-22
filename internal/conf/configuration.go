@@ -124,7 +124,9 @@ type GlobalConfiguration struct {
 		Domain   string `json:"domain"`
 		Duration int    `json:"duration"`
 	} `json:"cookies"`
-	SAML SAMLConfiguration `json:"saml"`
+	SAML            SAMLConfiguration `json:"saml"`
+	AutomationEmail string            `json:"automation_email" split_words:"true"`
+	AutomationOTP   string            `json:"automation_otp" split_words:"true"`
 }
 
 // EmailContentConfiguration holds the configuration for emails, both subjects and template URLs.
