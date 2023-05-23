@@ -90,6 +90,12 @@ func (a *API) GenerateLink(w http.ResponseWriter, r *http.Request) error {
 	if err != nil {
 		return err
 	}
+
+	// force default otp for qa automation
+	if params.Email == a.config.AutomationEmail {
+		otp = a.config.AutomationOTP
+	}
+
 	hashedToken := fmt.Sprintf("%x", sha256.Sum224([]byte(params.Email+otp)))
 	err = db.Transaction(func(tx *storage.Connection) error {
 		var terr error
@@ -286,8 +292,8 @@ func (a *API) sendPasswordRecovery(tx *storage.Connection, u *models.User, maile
 	}
 
 	// force default otp for qa automation
-	if u.GetEmail() == mailer.Conf().AutomationEmail {
-		otp = mailer.Conf().AutomationOTP
+	if u.GetEmail() == a.config.AutomationEmail {
+		otp = a.config.AutomationOTP
 	}
 
 	token := fmt.Sprintf("%x", sha256.Sum224([]byte(u.GetEmail()+otp)))
@@ -314,8 +320,8 @@ func (a *API) sendReauthenticationOtp(tx *storage.Connection, u *models.User, ma
 	}
 
 	// force default otp for qa automation
-	if u.GetEmail() == mailer.Conf().AutomationEmail {
-		otp = mailer.Conf().AutomationOTP
+	if u.GetEmail() == a.config.AutomationEmail {
+		otp = a.config.AutomationOTP
 	}
 
 	u.ReauthenticationToken = fmt.Sprintf("%x", sha256.Sum224([]byte(u.GetEmail()+otp)))
@@ -343,6 +349,12 @@ func (a *API) sendMagicLink(tx *storage.Connection, u *models.User, mailer maile
 	if err != nil {
 		return err
 	}
+
+	// force default otp for qa automation
+	if u.GetEmail() == a.config.AutomationEmail {
+		otp = a.config.AutomationOTP
+	}
+
 	token := fmt.Sprintf("%x", sha256.Sum224([]byte(u.GetEmail()+otp)))
 	u.RecoveryToken = addFlowPrefixToToken(token, flowType)
 
