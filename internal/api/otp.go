@@ -17,6 +17,7 @@ import (
 type OtpParams struct {
 	Email               string                 `json:"email"`
 	Phone               string                 `json:"phone"`
+	PhoneNumber         string                 `json:"phoneNumber"`
 	CreateUser          bool                   `json:"create_user"`
 	Data                map[string]interface{} `json:"data"`
 	Channel             string                 `json:"channel"`
@@ -26,6 +27,7 @@ type OtpParams struct {
 
 // SmsParams contains the request body params for sms otp
 type SmsParams struct {
+	PhoneNumber         string                 `json:"phoneNumber"`
 	Phone               string                 `json:"phone"`
 	Channel             string                 `json:"channel"`
 	Data                map[string]interface{} `json:"data"`
@@ -34,6 +36,9 @@ type SmsParams struct {
 }
 
 func (p *OtpParams) Validate() error {
+	if p.Phone == "" && p.PhoneNumber != "" {
+		p.Phone = p.PhoneNumber
+	}
 	if p.Email != "" && p.Phone != "" {
 		return badRequestError("Only an email address or phone number should be provided")
 	}
@@ -47,6 +52,9 @@ func (p *OtpParams) Validate() error {
 }
 
 func (p *SmsParams) Validate(smsProvider string) error {
+	if p.Phone == "" && p.PhoneNumber != "" {
+		p.Phone = p.PhoneNumber
+	}
 	if p.Phone != "" && !sms_provider.IsValidMessageChannel(p.Channel, smsProvider) {
 		return badRequestError(InvalidChannelError)
 	}
@@ -127,7 +135,7 @@ func (a *API) SmsOtp(w http.ResponseWriter, r *http.Request) error {
 		return badRequestError("Could not read sms otp params: %v", err)
 	}
 	// For backwards compatibility, we default to SMS if params Channel is not specified
-	if params.Phone != "" && params.Channel == "" {
+	if (params.Phone != "" || params.PhoneNumber != "") && params.Channel == "" {
 		params.Channel = sms_provider.SMSProvider
 	}
 
