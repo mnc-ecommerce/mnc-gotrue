@@ -59,9 +59,10 @@ func (r *AccessTokenResponse) AsRedirectURL(redirectURL string, extraParams url.
 
 // PasswordGrantParams are the parameters the ResourceOwnerPasswordGrant method accepts
 type PasswordGrantParams struct {
-	Email    string `json:"email"`
-	Phone    string `json:"phone"`
-	Password string `json:"password"`
+	Email       string `json:"email"`
+	Phone       string `json:"phone"`
+	PhoneNumber string `json:"phoneNumber"`
+	Password    string `json:"password"`
 }
 
 // RefreshTokenGrantParams are the parameters the RefreshTokenGrant method accepts
@@ -193,6 +194,11 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 
 	if err := json.Unmarshal(body, params); err != nil {
 		return badRequestError("Could not read password grant params: %v", err)
+	}
+
+	// handle some sdk not support phone param
+	if params.PhoneNumber != "" && params.Phone == "" {
+		params.Phone = params.PhoneNumber
 	}
 
 	aud := a.requestAud(ctx, r)
