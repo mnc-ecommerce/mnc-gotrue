@@ -50,11 +50,195 @@ const defaultConfirmationMail = `<h2>Confirm your email</h2>
 <p>Alternatively, enter the code: {{ .Token }}</p>
 `
 
-const defaultRecoveryMail = `<h2>Reset password</h2>
-
-<p>Follow this link to reset the password for your user:</p>
-<p><a href="{{ .ConfirmationURL }}">Reset password</a></p>
-<p>Alternatively, enter the code: {{ .Token }}</p>`
+const defaultRecoveryMail = `<!DOCTYPE html>
+<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+  <meta charset="utf-8">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no, url=no">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings xmlns:o="urn:schemas-microsoft-com:office:office">
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <style>
+    td,th,div,p,a,h1,h2,h3,h4,h5,h6 {font-family: "Segoe UI", sans-serif; mso-line-height-rule: exactly;}
+  </style>
+  <![endif]-->
+  <title>Reset your email address</title>
+  <style>
+    @media (max-width: 600px) {
+      .sm-h-800px {
+        height: 800px !important;
+      }
+      .sm-w-1-3 {
+        width: 33.333333% !important;
+      }
+      .sm-w-2-3 {
+        width: 66.666667% !important;
+      }
+      .sm-w-300px {
+        width: 300px !important;
+      }
+      .sm-px-4 {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+      }
+    }
+  </style>
+</head>
+<body style="margin: 0; width: 100%; background-color: #fff; padding: 0; -webkit-font-smoothing: antialiased; word-break: break-word">
+  <div style="display: none">
+    Please reset your email address.
+    &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847;
+  </div>
+  <div role="article" aria-roledescription="email" aria-label="Reset your email address" lang="en">
+    <div style="background-color: #fff;">
+      <table align="center" cellpadding="0" cellspacing="0" role="presentation">
+        <tr>
+          <td style="width: 800px; max-width: 100%">
+            <div style="margin-top: 36px; text-align: center">
+              <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/public/email/Logo-AladinMall.svg?t=2023-06-13T04%3A05%3A13.742Z" alt="aladinmall logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0">
+            </div>
+          </td>
+        </tr>
+      </table>
+      <div style="display: flex; align-items: center; justify-content: center">
+        <div class="sm-w-300px sm-h-800px" style="margin-top: 46px; height: 572.5px; width: 800px; border-radius: 10px; border: 1px solid #d9d9d9; background-color: #fff">
+          <div class="sm-px-4" style="padding-left: 90px; padding-right: 90px; padding-top: 46px">
+            <p style="margin: 0; padding-bottom: 8px; font-size: 16px">Hai <b>Aladiners,</b></p>
+            <p style="margin: 0; padding-bottom: 8px; font-size: 16px;">Kami menerima permintaan reset password untuk
+              akun Anda. Kami memahami betapa
+              pentingnya keamanan akun Anda, dan kami siap membantu Anda mereset password dengan cepat dan
+              mudah.<br><br><br>Silakan klik tautan di bawah ini untuk mereset password Anda:</p>
+            <div style="margin-bottom: 20px; display: flex; height: 42px; align-items: center; background-color: #F5F5F5">
+              <p style="padding-top: 10px; padding-bottom: 10px; padding-left: 20px; font-size: 14px"><a href="{{ .ConfirmationURL }}">[Link Reset Password]</a></p>
+            </div>
+            <p style="margin-top: 8px; font-size: 14px">Jika Anda tidak merasa melakukan permintaan reset password ini, silakan
+              abaikan email ini.<br><br>
+              Jika Anda mengalami kesulitan dalam mereset password Anda atau memiliki pertanyaan lainnya, jangan ragu
+              untuk menghubungi tim dukungan kami di cs-aladinmall@misteraladin.com atau hubungi kami di nomor Whatsapp
+              +62 811 113 8080.</p>
+            <p style="margin-top: 30px; font-size: 14px">Salam hangat,</p>
+            <p style="margin-top: 30px; font-size: 14px; font-weight: 700">Tim AladinMall</p>
+            <div style="margin-bottom: 12px; margin-top: 30px; width: fit-content">
+              <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/public/email/Rectangle-1.svg?t=2023-06-13T04%3A59%3A55.007Z" alt="horizontal line" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
+            </div>
+          </div>
+          <table style="margin-left: auto; margin-right: auto" cellpadding="0" cellspacing="0" role="presentation">
+            <tr>
+              <td class="sm-w-1-3">
+                <div style="margin-right: 20px; padding: 0">
+                  <p style="margin: 0; padding: 0; font-size: 12px; color: #E64325"><b>Part of</b></p>
+                  <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/public/email/logo-mnc-ecommerce.svg?t=2023-06-13T04%3A04%3A03.570Z" alt="MNC logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
+                </div>
+              </td>
+              <td class="sm-w-2-3" style="width: 518px">
+                <div style="display: flex; flex-direction: column">
+                  <p style="font-size: 10px">AladinMall merupakan toko belanja online terlengkap dan
+                    terpercaya.
+                    Menyediakan beragam pilihan produk kebutuhan sehari-hari dengan jaminan harga termurah
+                    dan kualitas terbaik. Layanan pengiriman luas serta. kemudahan pembayaran bagi seluruh
+                    pelanggan.</p>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <table align="center" style="width: 800px;" cellpadding="0" cellspacing="0" role="presentation">
+        <tr>
+          <td style="width: 100%;">
+            <div style="margin-bottom: 25px; margin-top: 33px; text-align: center">
+              <p style="margin: 0; padding: 0; font-size: 12px; font-style: italic; color: #8C8C8C">*Email dikirim secara otomatis.
+                Harap jangan mengirim balasan ke email ini.
+              </p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 800px;">
+            <table align="center" style="margin-bottom: 25px;" cellpadding="0" cellspacing="0" role="presentation">
+              <tr>
+                <td style="width: 22px; max-width: 100%; padding-right: 27px; text-align: center">
+                  <a href="https://www.tiktok.com/@aladinmall" target="_blank">
+                    <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/public/email/Tiktok.svg?t=2023-06-13T03%3A46%3A24.148Z" alt="tiktok logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
+                  </a>
+                </td>
+                <td style="width: 22px; max-width: 100%; padding-right: 27px; text-align: center;">
+                  <a href="https://www.facebook.com/aladinmall.id" target="_blank">
+                    <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/public/email/Facebook.svg?t=2023-06-13T03%3A22%3A09.821Z" alt="facebook logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
+                  </a>
+                </td>
+                <td style="width: 22px; max-width: 100%; padding-right: 27px; text-align: center;">
+                  <a href="https://www.youtube.com/@aladinmall" target="_blank">
+                    <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/public/email/Youtube.svg?t=2023-06-13T03%3A23%3A17.500Z" alt="youtube logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
+                  </a>
+                </td>
+                <td style="width: 22px; max-width: 100%; text-align: center;">
+                  <a href="https://www.instagram.com/aladinmall.id/" target="_blank">
+                    <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/public/email/Instagram.svg?t=2023-06-13T03%3A22%3A22.828Z" alt="instagram logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 800px; max-width: 100%;">
+            <div style="text-align: center;">
+              <p style="margin: 0; padding: 0; font-size: 12px; color: #8C8C8C;">MNC Center lt. 20 Jl. Kebon Sirih
+                No.17-19, Jakarta Pusat 10340</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 800px; max-width: 100%;">
+            <div style="margin-bottom: 30px; margin-top: 30px; width: 100%">
+              <svg width="800" height="1" viewBox="0 0 800 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="800" height="0.5" fill="#D9D9D9"></rect>
+              </svg>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 800px; max-width: 100%;">
+            <div style="text-align: center;">
+              <p style="margin: 0; padding-top: 8px; font-size: 12px; color: #8C8C8C">Senin - Sabtu : (021) 390 6001 |
+                Whatsapp: +62 811 113 8080</p>
+              <p style="margin: 0; padding-top: 8px; font-size: 12px; color: #8C8C8C;">Minggu : (hanya email)
+                cs-aladinmall@misteraladin.com</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 800px; max-width: 100%;">
+            <div style="margin-bottom: 30px; margin-top: 30px; width: 100%;">
+              <svg width="800" height="1" viewBox="0 0 800 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="800" height="0.5" fill="#D9D9D9"></rect>
+              </svg>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 800px; max-width: 100%;">
+            <div style="text-align: center;">
+              <p style="margin-bottom: 28px; padding: 0; font-size: 12px; color: #8C8C8C">&copy; 2024 AladinMall. PT MNC
+                ALADIN INDONESIA All rights reserved.</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+</html>`
 
 // const defaultMagicLinkMail = `<h2>Magic Link</h2>
 
