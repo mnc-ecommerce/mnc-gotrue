@@ -37,6 +37,10 @@ func encodeRedirectParam(referrerURL string) string {
 	return redirectParam
 }
 
+func addLayout(content string) string {
+	return strings.ReplaceAll(BaseLayout, "{{content}}", content)
+}
+
 const defaultInviteMail = `<h2>You have been invited</h2>
 
 <p>You have been invited to create a user on {{ .SiteURL }}. Follow this link to accept the invite:</p>
@@ -99,7 +103,7 @@ func (m *TemplateMailer) InviteMail(user *models.User, otp, referrerURL string) 
 		user.GetEmail(),
 		string(withDefault(m.Config.Mailer.Subjects.Invite, "You have been invited")),
 		m.Config.Mailer.Templates.Invite,
-		defaultInviteMail,
+		addLayout(defaultInviteMail),
 		data,
 	)
 }
@@ -125,7 +129,7 @@ func (m *TemplateMailer) ConfirmationMail(user *models.User, otp, referrerURL st
 		user.GetEmail(),
 		string(withDefault(m.Config.Mailer.Subjects.Confirmation, "Confirm Your Email")),
 		m.Config.Mailer.Templates.Confirmation,
-		defaultConfirmationMail,
+		addLayout(defaultConfirmationMail),
 		data,
 	)
 }
@@ -143,7 +147,7 @@ func (m *TemplateMailer) ReauthenticateMail(user *models.User, otp string) error
 		user.GetEmail(),
 		string(withDefault(m.Config.Mailer.Subjects.Reauthentication, "Confirm reauthentication")),
 		m.Config.Mailer.Templates.Reauthentication,
-		defaultReauthenticateMail,
+		addLayout(defaultReauthenticateMail),
 		data,
 	)
 }
@@ -205,7 +209,7 @@ func (m *TemplateMailer) EmailChangeMail(user *models.User, otpNew, otpCurrent, 
 				address,
 				string(withDefault(m.Config.Mailer.Subjects.EmailChange, "Confirm Email Change")),
 				template,
-				defaultEmailChangeMail,
+				addLayout(defaultEmailChangeMail),
 				data,
 			)
 		}(email.Address, email.Otp, email.TokenHash, email.Template)
@@ -241,7 +245,7 @@ func (m *TemplateMailer) RecoveryMail(user *models.User, otp, referrerURL string
 		user.GetEmail(),
 		string(withDefault(m.Config.Mailer.Subjects.Recovery, "Reset Your Password")),
 		m.Config.Mailer.Templates.Recovery,
-		defaultRecoveryMail,
+		addLayout(defaultRecoveryMail),
 		data,
 	)
 }
@@ -268,7 +272,7 @@ func (m *TemplateMailer) MagicLinkMail(user *models.User, otp, referrerURL strin
 		user.GetEmail(),
 		string(withDefault(m.Config.Mailer.Subjects.MagicLink, "Your Magic Link")),
 		m.Config.Mailer.Templates.MagicLink,
-		defaultMagicLinkMail,
+		addLayout(defaultMagicLinkMail),
 		data,
 	)
 }
