@@ -75,11 +75,11 @@ const BaseLayout = `<!DOCTYPE html>
                   <p style="margin: 0; padding-bottom: 8px; font-size: 16px; font-weight: 400; line-height: 22px">Hai <b>Aladiners,</b></p>
                   <p style="margin: 0; padding-bottom: 8px; font-size: 14px; line-height: 22px"></p>
                   <div class="sm-w-280px" style="margin-bottom: 8px; height: auto; width: 620px; background-color: #F5F5F5">
-                    <div class="sm-pl-5px" style="display: flex; padding-left: 20px">
-                      
+                    <div class="sm-pl-5px" style="display: block; padding-left: 20px">
+
 										{{content}}
-                      
-                  </div>
+
+										</div>
                   <p style="margin-bottom: 8px; margin-top: 30px; padding: 0; font-size: 14px; line-height: 22px"></p>
                   <p style="margin-top: 8px; font-size: 14px; line-height: 22px">Salam hangat,</p>
                   <p style="margin-bottom: 8px; margin-top: 30px; padding: 0; font-size: 14px; line-height: 22px;"><b>Tim AladinMall</b></p>
