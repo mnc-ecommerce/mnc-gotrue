@@ -3,7 +3,6 @@ package api
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 
@@ -104,11 +103,6 @@ func (a *API) Otp(w http.ResponseWriter, r *http.Request) error {
 	} else if params.Phone != "" {
 		return a.SmsOtp(w, r)
 	}
-
-	bodyBytes, _ := io.ReadAll(r.Body)
-	bodyString := string(bodyBytes)
-	fmt.Println("raw : ", r)
-	fmt.Println("body : ", bodyString)
 
 	return otpError("unsupported_otp_type", "")
 }

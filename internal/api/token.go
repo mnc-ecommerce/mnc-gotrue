@@ -208,6 +208,7 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 		return unprocessableEntityError("Only an email address or phone number should be provided on login.")
 	}
 	var user *models.User
+	var legacyCredential *models.LegacyCredential
 	var grantParams models.GrantParams
 	var provider string
 	if params.Email != "" {
@@ -216,6 +217,7 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 			return badRequestError("Email logins are disabled")
 		}
 		user, err = models.FindUserByEmailAndAudience(db, params.Email, aud)
+		legacyCredential, _ = models.FindUserByEmailFromLegacy(db, params.Email)
 	} else if params.Phone != "" {
 		provider = "phone"
 		if !config.External.Phone.Enabled {
@@ -234,7 +236,7 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 		return internalServerError("Database error querying schema").WithInternalError(err)
 	}
 
-	if user.IsBanned() || !user.Authenticate(params.Password) {
+	if user.IsBanned() || (!user.Authenticate(params.Password) && (legacyCredential != nil && !legacyCredential.Authenticate(params.Password))) {
 		return oauthError("invalid_grant", InvalidLoginMessage)
 	}
 
