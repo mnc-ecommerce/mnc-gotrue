@@ -236,8 +236,10 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 		return internalServerError("Database error querying schema").WithInternalError(err)
 	}
 
-	if user.IsBanned() || (!user.Authenticate(params.Password) && (legacyCredential != nil && !legacyCredential.Authenticate(params.Password))) {
-		return oauthError("invalid_grant", InvalidLoginMessage)
+	if user.IsBanned() || (!user.Authenticate(params.Password)) {
+		if !(legacyCredential != nil && !legacyCredential.Authenticate(params.Password)) {
+			return oauthError("invalid_grant", InvalidLoginMessage)
+		}
 	}
 
 	if params.Email != "" && !user.IsConfirmed() {
