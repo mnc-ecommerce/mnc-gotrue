@@ -209,6 +209,7 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 	}
 	var user *models.User
 	var legacyCredential *models.LegacyCredential
+	var errLegacy error
 	var grantParams models.GrantParams
 	var provider string
 	if params.Email != "" {
@@ -217,7 +218,7 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 			return badRequestError("Email logins are disabled")
 		}
 		user, err = models.FindUserByEmailAndAudience(db, params.Email, aud)
-		legacyCredential, _ = models.FindUserByEmailFromLegacy(db, params.Email)
+		legacyCredential, errLegacy = models.FindUserByEmailFromLegacy(db, params.Email)
 	} else if params.Phone != "" {
 		provider = "phone"
 		if !config.External.Phone.Enabled {
@@ -237,7 +238,10 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 	}
 
 	if user.IsBanned() || (!user.Authenticate(params.Password)) {
-		if !(legacyCredential != nil && !legacyCredential.Authenticate(params.Password)) {
+		if errLegacy != nil && models.IsNotFoundError(errLegacy) {
+			return oauthError("invalid_grant", InvalidLoginMessage)
+		}
+		if !legacyCredential.Authenticate(params.Password) {
 			return oauthError("invalid_grant", InvalidLoginMessage)
 		}
 	}
