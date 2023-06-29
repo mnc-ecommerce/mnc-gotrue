@@ -11,6 +11,9 @@ import (
 )
 
 func CompareLegacyHashAndPassword(ctx context.Context, hash, password string) error {
+	if password == "" || hash == "" {
+		return errors.New("password or hash can't empty")
+	}
 	splitedHash := strings.Split(hash, ":")
 	if len(splitedHash) < 3 {
 		return errors.New("failed legacy hash format")
