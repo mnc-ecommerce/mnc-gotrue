@@ -10,6 +10,7 @@ import (
 	"github.com/supabase/gotrue/internal/api/sms_provider"
 	"github.com/supabase/gotrue/internal/models"
 	"github.com/supabase/gotrue/internal/storage"
+	"github.com/supabase/gotrue/internal/utilities"
 )
 
 // OtpParams contains the request body params for the otp endpoint
@@ -79,6 +80,10 @@ func (a *API) Otp(w http.ResponseWriter, r *http.Request) error {
 	body, err := getBodyBytes(r)
 	if err != nil {
 		return err
+	}
+
+	if len(utilities.FindDuplicate(string(body))) > 0 {
+		return badRequestError("Found duplicate key")
 	}
 
 	if err = json.Unmarshal(body, params); err != nil {

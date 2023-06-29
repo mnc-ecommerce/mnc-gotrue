@@ -5,6 +5,7 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"regexp"
 	"strings"
 )
 
@@ -53,4 +54,33 @@ func GetBodyBytes(req *http.Request) ([]byte, error) {
 	req.Body = io.NopCloser(bytes.NewReader(buf))
 
 	return buf, nil
+}
+
+func matchPattern(str string, pattern string) bool {
+	re := regexp.MustCompile(pattern)
+	return re.MatchString(str)
+}
+
+func FindDuplicate(data string) []string {
+	words := strings.Fields(data)
+	pattern := `^".+":$`
+	// Create a map to store word frequencies
+	wordFrequency := make(map[string]int)
+
+	// Iterate over the words and count their occurrences
+	for _, word := range words {
+		if matchPattern(word, pattern) {
+			wordFrequency[word]++
+		}
+	}
+
+	// Find the duplicate words
+	var duplicates []string
+	for word, count := range wordFrequency {
+		if count > 1 {
+			duplicates = append(duplicates, word)
+		}
+	}
+
+	return duplicates
 }
