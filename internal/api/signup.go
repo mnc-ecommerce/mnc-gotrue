@@ -15,6 +15,7 @@ import (
 	"github.com/supabase/gotrue/internal/metering"
 	"github.com/supabase/gotrue/internal/models"
 	"github.com/supabase/gotrue/internal/storage"
+	"github.com/supabase/gotrue/internal/utilities"
 )
 
 // SignupParams are the parameters the Signup endpoint accepts
@@ -36,6 +37,9 @@ func (p *SignupParams) Validate(passwordMinLength int, smsProvider string) error
 	}
 	if len(p.Password) < passwordMinLength {
 		return invalidPasswordLengthError(passwordMinLength)
+	}
+	if err := utilities.ValidatePassword(p.Password); err != nil {
+		return err
 	}
 	if p.Email != "" && p.Phone != "" {
 		return unprocessableEntityError("Only an email address or phone number should be provided on signup.")

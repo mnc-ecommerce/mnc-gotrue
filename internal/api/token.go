@@ -207,6 +207,11 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 	if params.Email != "" && params.Phone != "" {
 		return unprocessableEntityError("Only an email address or phone number should be provided on login.")
 	}
+
+	if len(params.Password) > 30 {
+		return unprocessableEntityError("Maximum Password length cannot moret than 30 characters")
+	}
+
 	var user *models.User
 	var legacyCredential *models.LegacyCredential
 	var errLegacy error
@@ -238,7 +243,7 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 	}
 
 	if user.IsBanned() || (!user.Authenticate(params.Password)) {
-		if errLegacy != nil && models.IsNotFoundError(errLegacy) && !legacyCredential.Authenticate(params.Password) {
+		if (errLegacy != nil && models.IsNotFoundError(errLegacy)) || !legacyCredential.Authenticate(params.Password) {
 			return oauthError("invalid_grant", InvalidLoginMessage)
 		}
 	}
