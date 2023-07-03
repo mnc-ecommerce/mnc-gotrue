@@ -258,7 +258,7 @@ func (a *API) signupVerify(r *http.Request, ctx context.Context, conn *storage.C
 			if user.InvitedAt != nil {
 				// sign them up with temporary password, and require application
 				// to present the user with a password set form
-				password, err := password.Generate(64, 10, 0, false, true)
+				password, err := password.Generate(64, 10, 1, false, true)
 				if err != nil {
 					internalServerError("error creating user").WithInternalError(err)
 				}

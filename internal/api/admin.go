@@ -342,7 +342,7 @@ func (a *API) adminUserCreate(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	if params.Password == nil || *params.Password == "" {
-		password, err := password.Generate(64, 10, 0, false, true)
+		password, err := password.Generate(64, 10, 1, false, true)
 		if err != nil {
 			return internalServerError("Error generating password").WithInternalError(err)
 		}
