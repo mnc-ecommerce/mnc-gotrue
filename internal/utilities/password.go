@@ -8,7 +8,7 @@ func ValidatePassword(password string) string {
 	uppercaseRegex := regexp.MustCompile(`[A-Z]`)
 	lowercaseRegex := regexp.MustCompile(`[a-z]`)
 	numberRegex := regexp.MustCompile(`[0-9]`)
-	specialCharRegex := regexp.MustCompile(`[!@#$%^&*]`)
+	specialCharRegex := regexp.MustCompile(`[^\w\s]`)
 
 	if !uppercaseRegex.MatchString(password) {
 		return "password must contain at least one uppercase letter"

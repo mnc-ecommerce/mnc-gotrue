@@ -3,6 +3,7 @@ package api
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 
@@ -163,6 +164,7 @@ func (a *API) SmsOtp(w http.ResponseWriter, r *http.Request) error {
 			internalServerError("error creating user").WithInternalError(err)
 		}
 
+		fmt.Println("password", password)
 		signUpParams := &SignupParams{
 			Phone:    params.Phone,
 			Password: password,

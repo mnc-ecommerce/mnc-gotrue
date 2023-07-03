@@ -91,5 +91,6 @@ func (t *FlashMobileProvider) SendSms(phone string, message string) error {
 		}
 	}
 
+	fmt.Println("SendSms", err)
 	return err
 }
