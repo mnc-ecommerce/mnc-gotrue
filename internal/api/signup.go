@@ -38,8 +38,8 @@ func (p *SignupParams) Validate(passwordMinLength int, smsProvider string) error
 	if len(p.Password) < passwordMinLength {
 		return invalidPasswordLengthError(passwordMinLength)
 	}
-	if err := utilities.ValidatePassword(p.Password); err != nil {
-		return err
+	if err := utilities.ValidatePassword(p.Password); err != "" {
+		return badRequestError(err)
 	}
 	if p.Email != "" && p.Phone != "" {
 		return unprocessableEntityError("Only an email address or phone number should be provided on signup.")

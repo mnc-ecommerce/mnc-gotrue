@@ -14,6 +14,11 @@ const (
 	defaultFlashMobileApiBase = "https://sms.flashmobile.co.id:881"
 )
 
+var urlFlashMobileApiBase = []string{
+	"https://sms.flashmobile.co.id:881",
+	"https://sms.flashmobile.co.id:882",
+}
+
 type FlashMobileProvider struct {
 	Config  *conf.FlashMobileProviderConfiguration
 	APIPath string
@@ -31,7 +36,7 @@ func NewFlashMobileProvider(config conf.FlashMobileProviderConfiguration) (SmsPr
 		return nil, err
 	}
 
-	apiPath := defaultFlashMobileApiBase + "/v1/send"
+	apiPath := defaultFlashMobileApiBase
 	return &FlashMobileProvider{
 		Config:  &config,
 		APIPath: apiPath,
@@ -50,36 +55,41 @@ func (t *FlashMobileProvider) SendMessage(phone string, message string, channel 
 // Send an SMS containing the OTP with FlashMobile's API
 func (t *FlashMobileProvider) SendSms(phone string, message string) error {
 
-	requestURL, _ := url.Parse(t.APIPath)
-	urlQuery := requestURL.Query()
-	urlQuery.Set("uid", t.Config.User)
-	urlQuery.Set("password", t.Config.Pass)
-	urlQuery.Set("sender", t.Config.Masking)
-	urlQuery.Set("phone", phone)
-	urlQuery.Set("text", message)
-	requestURL.RawQuery = urlQuery.Encode()
-
-	client := &http.Client{Timeout: defaultTimeout}
-	r, err := http.NewRequest("GET", requestURL.String(), nil)
-	if err != nil {
-		return err
-	}
-
-	res, err := client.Do(r)
-	if err != nil {
-		return err
-	}
-	defer utilities.SafeClose(res.Body)
-
 	resp := &FlashMobileResponse{}
-	derr := json.NewDecoder(res.Body).Decode(resp)
-	if derr != nil {
-		return derr
+	var err error
+	for _, vBaseUrl := range urlFlashMobileApiBase {
+		requestURL, _ := url.Parse(vBaseUrl + "/v1/send")
+		urlQuery := requestURL.Query()
+		urlQuery.Set("uid", t.Config.User)
+		urlQuery.Set("password", t.Config.Pass)
+		urlQuery.Set("sender", t.Config.Masking)
+		urlQuery.Set("phone", phone)
+		urlQuery.Set("text", message)
+		requestURL.RawQuery = urlQuery.Encode()
+
+		client := &http.Client{Timeout: defaultTimeout}
+		r, err := http.NewRequest("GET", requestURL.String(), nil)
+		if err != nil {
+			continue
+		}
+
+		res, err := client.Do(r)
+		if err != nil {
+			continue
+		}
+		defer utilities.SafeClose(res.Body)
+
+		derr := json.NewDecoder(res.Body).Decode(resp)
+		if derr != nil {
+			err = derr
+			continue
+		}
+
+		if resp.Status == 0 {
+			err = fmt.Errorf("textlocal error: %v", resp.Message)
+			continue
+		}
 	}
 
-	if resp.Status == 0 {
-		return fmt.Errorf("textlocal error: %v", resp.Message)
-	}
-
-	return nil
+	return err
 }
