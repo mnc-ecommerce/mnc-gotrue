@@ -74,6 +74,7 @@ func (t *FlashMobileProvider) SendSms(phone string, message string) error {
 		}
 
 		res, err := client.Do(r)
+		fmt.Println("Response FlashMobile SendSms", res)
 		if err != nil {
 			continue
 		}
