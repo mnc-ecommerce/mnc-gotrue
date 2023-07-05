@@ -48,6 +48,7 @@ func NewFacebookProvider(ext conf.OAuthProviderConfiguration, scopes string) (OA
 
 	oauthScopes := []string{
 		"email",
+		"public_profile",
 	}
 
 	if scopes != "" {
