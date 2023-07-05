@@ -6,7 +6,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
-	"log"
 	"strings"
 
 	"github.com/supabase/gotrue/internal/conf"
@@ -14,30 +13,27 @@ import (
 )
 
 const (
-	defaultFacebookAuthBase  = "www.facebook.com"
+	defaultFacebookAuthBase  = "www.facebook.com/v17.0"
 	defaultFacebookTokenBase = "graph.facebook.com" //#nosec G101 -- Not a secret value.
 	defaultFacebookAPIBase   = "graph.facebook.com"
 )
 
 type facebookProvider struct {
 	*oauth2.Config
-	ProfileURL        string
-	ProfilePictureURL string
+	ProfileURL string
 }
 
 type facebookUser struct {
-	ID        string              `json:"id"`
-	Email     string              `json:"email"`
-	FirstName string              `json:"first_name"`
-	LastName  string              `json:"last_name"`
-	Alias     string              `json:"name"`
-	Avatar    facebookUserPicture `json:"picture"`
-}
-
-type facebookUserPicture struct {
-	Data struct {
-		URL string `json:"url"`
-	} `json:"data"`
+	ID        string `json:"id"`
+	Email     string `json:"email"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Alias     string `json:"name"`
+	Avatar    struct {
+		Data struct {
+			URL string `json:"url"`
+		} `json:"data"`
+	} `json:"picture"`
 }
 
 // NewFacebookProvider creates a Facebook account provider.
@@ -48,12 +44,10 @@ func NewFacebookProvider(ext conf.OAuthProviderConfiguration, scopes string) (OA
 
 	authHost := chooseHost(ext.URL, defaultFacebookAuthBase)
 	tokenHost := chooseHost(ext.URL, defaultFacebookTokenBase)
-	profileURL := chooseHost(ext.URL, defaultFacebookAPIBase) + "/me?fields=email,first_name,last_name,name"
-	profilePictureURL := chooseHost(ext.URL, defaultFacebookAPIBase) + "/me/picture"
+	profileURL := chooseHost(ext.URL, defaultFacebookAPIBase) + "/me?fields=email,first_name,last_name,name,picture"
 
 	oauthScopes := []string{
 		"email",
-		"public_profile",
 	}
 
 	if scopes != "" {
@@ -71,8 +65,7 @@ func NewFacebookProvider(ext conf.OAuthProviderConfiguration, scopes string) (OA
 			},
 			Scopes: oauthScopes,
 		},
-		ProfileURL:        profileURL,
-		ProfilePictureURL: profilePictureURL,
+		ProfileURL: profileURL,
 	}, nil
 }
 
@@ -89,14 +82,6 @@ func (p facebookProvider) GetUserData(ctx context.Context, tok *oauth2.Token) (*
 	url := p.ProfileURL + "&appsecret_proof=" + appsecretProof
 	if err := makeRequest(ctx, tok, p.Config, url, &u); err != nil {
 		return nil, err
-	}
-
-	var uP facebookUserPicture
-	urlPicture := p.ProfileURL + "&appsecret_proof=" + appsecretProof
-	if err := makeRequest(ctx, tok, p.Config, urlPicture, &uP); err != nil {
-		log.Println("unable to find picture with Facebook provider :", err)
-	} else {
-		u.Avatar = uP
 	}
 
 	if u.Email == "" {
