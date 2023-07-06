@@ -47,6 +47,9 @@ func FindUserByEmailFromLegacy(tx *storage.Connection, email string) (*LegacyCre
 
 // Authenticate a user from a password
 func (u *LegacyCredential) Authenticate(password string) bool {
+	if u.EncryptedPassword == "" {
+		return false
+	}
 	err := crypto.CompareLegacyHashAndPassword(context.Background(), u.EncryptedPassword, password)
 	return err == nil
 }
