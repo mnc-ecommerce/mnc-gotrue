@@ -243,7 +243,10 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 	}
 
 	if user.IsBanned() || (!user.Authenticate(params.Password)) {
-		if (errLegacy != nil && models.IsNotFoundError(errLegacy)) || !legacyCredential.Authenticate(params.Password) {
+		if errLegacy != nil && models.IsNotFoundError(errLegacy) {
+			return oauthError("invalid_grant", InvalidLoginMessage)
+		}
+		if !legacyCredential.Authenticate(params.Password) {
 			return oauthError("invalid_grant", InvalidLoginMessage)
 		}
 	}
