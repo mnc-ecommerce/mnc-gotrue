@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/coreos/go-oidc/v3/oidc"
@@ -20,6 +21,7 @@ import (
 	"github.com/supabase/gotrue/internal/models"
 	"github.com/supabase/gotrue/internal/observability"
 	"github.com/supabase/gotrue/internal/storage"
+	"github.com/supabase/gotrue/internal/utilities"
 )
 
 // GoTrueClaims is a struct thats used for JWT claims
@@ -240,6 +242,20 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 			return oauthError("invalid_grant", InvalidLoginMessage)
 		}
 		return internalServerError("Database error querying schema").WithInternalError(err)
+	}
+
+	originHeader := r.Header.Get("Origin")
+	appType := []string{}
+	switch {
+	case strings.Contains(originHeader, "bos"):
+		appType = []string{"BOS"}
+	case strings.Contains(originHeader, "seller"):
+		appType = []string{"MOCA", "AMBO"}
+	case r.FormValue("app") != "":
+		appType = []string{r.FormValue("app")}
+	}
+	if len(appType) > 0 && user.UserMetaData["type"] != nil && !utilities.StringContains(appType, user.UserMetaData["type"].(string)) {
+		return oauthError("invalid_grant", InvalidLoginMessage)
 	}
 
 	if user.IsBanned() || (!user.Authenticate(params.Password)) {

@@ -84,3 +84,12 @@ func FindDuplicate(data string) []string {
 
 	return duplicates
 }
+
+func StringContains(s []string, e string) bool {
+	for _, a := range s {
+		if strings.EqualFold(a, e) {
+			return true
+		}
+	}
+	return false
+}
