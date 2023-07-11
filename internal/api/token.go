@@ -254,7 +254,9 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 	case r.FormValue("app") != "":
 		appType = []string{r.FormValue("app")}
 	}
-	if len(appType) > 0 && user.UserMetaData["type"] != nil && !utilities.StringContains(appType, user.UserMetaData["type"].(string)) {
+	if len(appType) > 0 &&
+		(user.UserMetaData["type"] == nil ||
+			(user.UserMetaData["type"] != nil && !utilities.StringContains(appType, user.UserMetaData["type"].(string)))) {
 		return oauthError("invalid_grant", InvalidLoginMessage)
 	}
 
