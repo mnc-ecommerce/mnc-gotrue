@@ -248,7 +248,7 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 	appType := []string{}
 	switch {
 	case strings.Contains(originHeader, "bos"):
-		appType = []string{"BOS"}
+		appType = []string{"BOS", "BOS_LEAD", "BOS_ADMIN", "BOS_USER", "BOS"}
 	case strings.Contains(originHeader, "seller"):
 		appType = []string{"MOCA", "AMBO"}
 	case r.FormValue("app") != "":
