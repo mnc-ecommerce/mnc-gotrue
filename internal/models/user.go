@@ -164,6 +164,10 @@ func (u *User) GetPhone() string {
 	return string(u.Phone)
 }
 
+func (u *User) GetPhoneChange() string {
+	return string(u.PhoneChange)
+}
+
 // UpdateUserMetaData sets all user data from a map of updates,
 // ensuring that it doesn't override attributes that are not
 // in the provided map.

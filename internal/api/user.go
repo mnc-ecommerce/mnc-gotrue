@@ -197,7 +197,7 @@ func (a *API) UserUpdate(w http.ResponseWriter, r *http.Request) error {
 		}
 
 		if params.Phone != "" && params.Phone != user.GetPhone() {
-			if user.GetPhone() == "" {
+			if user.GetPhone() == "" && user.GetPhoneChange() == "" {
 				// if the user doesn't have an existing phone
 				// then updating the user's phone should create a new phone identity
 				identity, terr := a.createNewIdentity(tx, user, "phone", structs.Map(provider.Claims{
