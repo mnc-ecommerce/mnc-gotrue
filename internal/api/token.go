@@ -693,17 +693,31 @@ func generateAccessToken(tx *storage.Connection, user *models.User, sessionId *u
 		}
 	}
 
+	var (
+		role string = user.Role
+		iss  string
+		iat  int64
+	)
+
+	if user.UserMetaData["type"] != nil && utilities.StringContains([]string{"BOS", "AMBO"}, user.UserMetaData["type"].(string)) {
+		role = "service_role"
+		iss = "admin-token"
+		iat = time.Now().Unix()
+	}
+
 	claims := &GoTrueClaims{
 		StandardClaims: jwt.StandardClaims{
 			Subject:   user.ID.String(),
 			Audience:  user.Aud,
 			ExpiresAt: time.Now().Add(expiresIn).Unix(),
+			Issuer:    iss,
+			IssuedAt:  iat,
 		},
 		Email:                         user.GetEmail(),
 		Phone:                         user.GetPhone(),
 		AppMetaData:                   user.AppMetaData,
 		UserMetaData:                  user.UserMetaData,
-		Role:                          user.Role,
+		Role:                          role,
 		SessionId:                     sid,
 		AuthenticatorAssuranceLevel:   aal,
 		AuthenticationMethodReference: amr,
