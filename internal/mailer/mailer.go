@@ -24,6 +24,7 @@ type Mailer interface {
 	ValidateEmail(email string) error
 	GetEmailActionLink(user *models.User, actionType, referrerURL string) (string, error)
 	Conf() *conf.GlobalConfiguration
+	SuccessSignupMail(user *models.User) error
 }
 
 // NewMailer returns a new gotrue mailer

@@ -279,6 +279,11 @@ func (a *API) signupVerify(r *http.Request, ctx context.Context, conn *storage.C
 		if terr = user.Confirm(tx); terr != nil {
 			return internalServerError("Error confirming user").WithInternalError(terr)
 		}
+		mailer := a.Mailer(ctx)
+		if err := mailer.SuccessSignupMail(user); err != nil {
+			return internalServerError("Error sending success signup email").WithInternalError(err)
+		}
+
 		return nil
 	})
 	if err != nil {

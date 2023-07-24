@@ -37,44 +37,78 @@ func encodeRedirectParam(referrerURL string) string {
 	return redirectParam
 }
 
-func addLayout(content string) string {
-	return strings.ReplaceAll(BaseLayout, "{{content}}", content)
+func addLayout(content string, config *conf.GlobalConfiguration) string {
+	return strings.ReplaceAll(BaseLayout(config), "{{content}}", content)
 }
 
-const defaultInviteMail = `<h2>You have been invited</h2>
-
+const defaultInviteMail = `
+<div class="sm-w-280px" style="margin-bottom: 8px; height: auto; width: 620px; background-color: #F5F5F5">
+<div class="sm-pl-5px" style="display: block; padding-left: 20px">
 <p>You have been invited to create a user on {{ .SiteURL }}. Follow this link to accept the invite:</p>
 <p><a href="{{ .ConfirmationURL }}">Accept the invite</a></p>
-<p>Alternatively, enter the code: {{ .Token }}</p>`
+<p>Alternatively, enter the code: {{ .Token }}</p>
+</div>
+</div>
+`
 
-const defaultConfirmationMail = `<h2>Confirm your email</h2>
-
+const defaultConfirmationMail = `
+<div class="sm-w-280px" style="margin-bottom: 8px; height: auto; width: 620px; background-color: #F5F5F5">
+<div class="sm-pl-5px" style="display: block; padding-left: 20px">
 <p>Follow this link to confirm your email:</p>
 <p><a href="{{ .ConfirmationURL }}">Confirm your email address</a></p>
 <p>Alternatively, enter the code: {{ .Token }}</p>
+</div>
+</div>
 `
 
-const defaultRecoveryMail = `<h2>Reset password</h2>
-
+const defaultRecoveryMail = `
+<div class="sm-w-280px" style="margin-bottom: 8px; height: auto; width: 620px; background-color: #F5F5F5">
+<div class="sm-pl-5px" style="display: block; padding-left: 20px">
 <p>Follow this link to reset the password for your user:</p>
 <p><a href="{{ .ConfirmationURL }}">Reset password</a></p>
-<p>Alternatively, enter the code: {{ .Token }}</p>`
+<p>Alternatively, enter the code: {{ .Token }}</p>
+</div>
+</div>
+`
 
-const defaultMagicLinkMail = `<h2>Magic Link</h2>
-
+const defaultMagicLinkMail = `
+<div class="sm-w-280px" style="margin-bottom: 8px; height: auto; width: 620px; background-color: #F5F5F5">
+<div class="sm-pl-5px" style="display: block; padding-left: 20px">
 <p>Follow this link to login:</p>
 <p><a href="{{ .ConfirmationURL }}">Log In</a></p>
-<p>Alternatively, enter the code: {{ .Token }}</p>`
+<p>Alternatively, enter the code: {{ .Token }}</p>
+</div>
+</div>
+`
 
-const defaultEmailChangeMail = `<h2>Confirm email address change</h2>
-
+const defaultEmailChangeMail = `
+<div class="sm-w-280px" style="margin-bottom: 8px; height: auto; width: 620px; background-color: #F5F5F5">
+<div class="sm-pl-5px" style="display: block; padding-left: 20px">
 <p>Follow this link to confirm the update of your email address from {{ .Email }} to {{ .NewEmail }}:</p>
 <p><a href="{{ .ConfirmationURL }}">Change email address</a></p>
-<p>Alternatively, enter the code: {{ .Token }}</p>`
+<p>Alternatively, enter the code: {{ .Token }}</p>
+</div>
+</div>
+`
 
-const defaultReauthenticateMail = `<h2>Confirm reauthentication</h2>
+const defaultReauthenticateMail = `
+<div class="sm-w-280px" style="margin-bottom: 8px; height: auto; width: 620px; background-color: #F5F5F5">
+<div class="sm-pl-5px" style="display: block; padding-left: 20px">
+<p>Enter the code: {{ .Token }}</p>
+</div>
+</div>
+`
 
-<p>Enter the code: {{ .Token }}</p>`
+const defaultSuccessRegisterMail = `
+<p>Terima kasih telah bergabung dengan AladinMall! </p>
+
+<p>Kami senang sekali Anda menjadi pelanggan baru kami. AladinMall adalah toko online yang menyediakan produk-produk berkualitas dan terpercaya dengan harga yang terjangkau. 
+Kami selalu berusaha memberikan pengalaman belanja yang mudah, cepat, dan menyenangkan. </p>
+<p>Kami memiliki berbagai macam produk, dari pakaian hingga aksesoris, dari kebutuhan rumah tangga hingga perlengkapan olahraga. 
+Selain itu, kami juga menawarkan diskon menarik dan promo spesial untuk Aladiners. </p>
+<p>Jangan lupa untuk mendaftar ke newsletter kami untuk mendapatkan informasi tentang produk terbaru dan promo eksklusif. 
+Kami juga selalu siap membantu jika Anda memiliki pertanyaan atau masalah. Hubungi kami melalui email atau live chat. </p>
+<p>Terima kasih atas kepercayaan Anda pada AladinMall. Kami harap Anda menikmati pengalaman belanja Anda di sini!</p>`
 
 // ValidateEmail returns nil if the email is valid,
 // otherwise an error indicating the reason it is invalid
@@ -103,7 +137,7 @@ func (m *TemplateMailer) InviteMail(user *models.User, otp, referrerURL string) 
 		user.GetEmail(),
 		string(withDefault(m.Config.Mailer.Subjects.Invite, "You have been invited")),
 		m.Config.Mailer.Templates.Invite,
-		addLayout(defaultInviteMail),
+		addLayout(defaultInviteMail, m.Config),
 		data,
 	)
 }
@@ -129,7 +163,7 @@ func (m *TemplateMailer) ConfirmationMail(user *models.User, otp, referrerURL st
 		user.GetEmail(),
 		string(withDefault(m.Config.Mailer.Subjects.Confirmation, "Confirm Your Email")),
 		m.Config.Mailer.Templates.Confirmation,
-		addLayout(defaultConfirmationMail),
+		addLayout(defaultConfirmationMail, m.Config),
 		data,
 	)
 }
@@ -147,7 +181,7 @@ func (m *TemplateMailer) ReauthenticateMail(user *models.User, otp string) error
 		user.GetEmail(),
 		string(withDefault(m.Config.Mailer.Subjects.Reauthentication, "Confirm reauthentication")),
 		m.Config.Mailer.Templates.Reauthentication,
-		addLayout(defaultReauthenticateMail),
+		addLayout(defaultReauthenticateMail, m.Config),
 		data,
 	)
 }
@@ -209,7 +243,7 @@ func (m *TemplateMailer) EmailChangeMail(user *models.User, otpNew, otpCurrent, 
 				address,
 				string(withDefault(m.Config.Mailer.Subjects.EmailChange, "Confirm Email Change")),
 				template,
-				addLayout(defaultEmailChangeMail),
+				addLayout(defaultEmailChangeMail, m.Config),
 				data,
 			)
 		}(email.Address, email.Otp, email.TokenHash, email.Template)
@@ -245,7 +279,7 @@ func (m *TemplateMailer) RecoveryMail(user *models.User, otp, referrerURL string
 		user.GetEmail(),
 		string(withDefault(m.Config.Mailer.Subjects.Recovery, "Reset Your Password")),
 		m.Config.Mailer.Templates.Recovery,
-		addLayout(defaultRecoveryMail),
+		addLayout(defaultRecoveryMail, m.Config),
 		data,
 	)
 }
@@ -272,7 +306,7 @@ func (m *TemplateMailer) MagicLinkMail(user *models.User, otp, referrerURL strin
 		user.GetEmail(),
 		string(withDefault(m.Config.Mailer.Subjects.MagicLink, "Your Magic Link")),
 		m.Config.Mailer.Templates.MagicLink,
-		addLayout(defaultMagicLinkMail),
+		addLayout(defaultMagicLinkMail, m.Config),
 		data,
 	)
 }
@@ -315,4 +349,14 @@ func (m TemplateMailer) GetEmailActionLink(user *models.User, actionType, referr
 		return "", err
 	}
 	return url, nil
+}
+
+func (m *TemplateMailer) SuccessSignupMail(user *models.User) error {
+	return m.Mailer.Mail(
+		user.GetEmail(),
+		"Selamat datang di AladinMall",
+		"",
+		addLayout(defaultSuccessRegisterMail, m.Config),
+		map[string]interface{}{},
+	)
 }

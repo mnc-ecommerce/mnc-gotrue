@@ -1,6 +1,9 @@
 package mailer
 
-const BaseLayout = `<!DOCTYPE html>
+import "github.com/supabase/gotrue/internal/conf"
+
+func BaseLayout(config *conf.GlobalConfiguration) string {
+	return `<!DOCTYPE html>
 <html lang="en" xmlns:v="urn:schemas-microsoft-com:vml">
 <head>
   <meta charset="utf-8">
@@ -74,12 +77,9 @@ const BaseLayout = `<!DOCTYPE html>
                 <div class="sm-px-4" style="padding-left: 90px; padding-right: 90px; padding-top: 46px">
                   <p style="margin: 0; padding-bottom: 8px; font-size: 16px; font-weight: 400; line-height: 22px">Hai <b>Aladiners,</b></p>
                   <p style="margin: 0; padding-bottom: 8px; font-size: 14px; line-height: 22px"></p>
-                  <div class="sm-w-280px" style="margin-bottom: 8px; height: auto; width: 620px; background-color: #F5F5F5">
-                    <div class="sm-pl-5px" style="display: block; padding-left: 20px">
 
-										{{content}}
+                  {{content}}
 
-										</div>
                   <p style="margin-bottom: 8px; margin-top: 30px; padding: 0; font-size: 14px; line-height: 22px"></p>
                   <p style="margin-top: 8px; font-size: 14px; line-height: 22px">Salam hangat,</p>
                   <p style="margin-bottom: 8px; margin-top: 30px; padding: 0; font-size: 14px; line-height: 22px;"><b>Tim AladinMall</b></p>
@@ -87,7 +87,7 @@ const BaseLayout = `<!DOCTYPE html>
                     <tr>
                       <td style="max-width: 100%;">
                         <div style="margin-bottom: 8px; display: flex;">
-                          <a href="https://node-proxy-stg.aladinmall.id" target="_blank" style="cursor: pointer">
+                          <a href="` + config.SiteURL + `" target="_blank" style="cursor: pointer">
                             <button style="height: 30px; width: 116px; cursor: pointer; border-radius: 8px; border: 1px solid #e64325; background-color: #E64325; color: #fff">Ke AladinMall</button>
                           </a>
                         </div>
@@ -208,3 +208,4 @@ const BaseLayout = `<!DOCTYPE html>
   </div>
 </body>
 </html>`
+}
