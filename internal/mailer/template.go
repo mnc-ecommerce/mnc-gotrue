@@ -100,14 +100,10 @@ const defaultReauthenticateMail = `
 `
 
 const defaultSuccessRegisterMail = `
-<p>Terima kasih telah bergabung dengan AladinMall! </p>
-
-<p>Kami senang sekali Anda menjadi pelanggan baru kami. AladinMall adalah toko online yang menyediakan produk-produk berkualitas dan terpercaya dengan harga yang terjangkau. 
-Kami selalu berusaha memberikan pengalaman belanja yang mudah, cepat, dan menyenangkan. </p>
-<p>Kami memiliki berbagai macam produk, dari pakaian hingga aksesoris, dari kebutuhan rumah tangga hingga perlengkapan olahraga. 
-Selain itu, kami juga menawarkan diskon menarik dan promo spesial untuk Aladiners. </p>
-<p>Jangan lupa untuk mendaftar ke newsletter kami untuk mendapatkan informasi tentang produk terbaru dan promo eksklusif. 
-Kami juga selalu siap membantu jika Anda memiliki pertanyaan atau masalah. Hubungi kami melalui email atau live chat. </p>
+<p>Terima kasih telah bergabung dengan AladinMall! Kami senang sekali Anda menjadi pelanggan baru kami.</p>
+<p>Kami ingin memberitahu Anda tentang AladinMall dan apa yang kami tawarkan. AladinMall adalah toko online yang menyediakan produk-produk berkualitas dan terpercaya dengan harga yang terjangkau. Kami selalu berusaha memberikan pengalaman belanja yang mudah, cepat, dan menyenangkan.</p>
+<p>Kami memiliki berbagai macam produk, dari pakaian hingga aksesoris, dari kebutuhan rumah tangga hingga perlengkapan olahraga. Selain itu, kami juga menawarkan diskon menarik dan promo spesial untuk pelanggan setia kami.</p>
+<p>Jangan lupa untuk mendaftar ke newsletter kami untuk mendapatkan informasi tentang produk terbaru dan promo eksklusif. Kami juga selalu siap membantu jika Anda memiliki pertanyaan atau masalah. Hubungi kami melalui email atau live chat.</p>
 <p>Terima kasih atas kepercayaan Anda pada AladinMall. Kami harap Anda menikmati pengalaman belanja Anda di sini!</p>`
 
 // ValidateEmail returns nil if the email is valid,
