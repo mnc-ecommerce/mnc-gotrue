@@ -338,6 +338,11 @@ func (a *API) createAccountFromExternalIdentity(tx *storage.Connection, r *http.
 			return nil, terr
 		}
 
+		mailer := a.Mailer(ctx)
+		if terr := mailer.SuccessSignupMail(user); terr != nil {
+			return nil, internalServerError("Error sending success signup email").WithInternalError(terr)
+		}
+
 	case models.AccountExists:
 		user = decision.User
 		identity = decision.Identities[0]
