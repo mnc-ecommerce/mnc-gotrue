@@ -62,7 +62,7 @@ func Dial(config *conf.GlobalConfiguration) (*Connection, error) {
 	}
 
 	if config.DB.ConnMaxIdleTime != time.Duration(0) {
-		options["pool_max_conn_idle_time"] = config.DB.ConnMaxIdleTime.String()
+		options["pool_max_conn_idle_time"] = (config.DB.ConnMaxIdleTime * time.Second).String()
 	}
 
 	db, err := pop.NewConnection(&pop.ConnectionDetails{
@@ -71,7 +71,7 @@ func Dial(config *conf.GlobalConfiguration) (*Connection, error) {
 		URL:             config.DB.URL,
 		Pool:            config.DB.MaxPoolSize,
 		IdlePool:        config.DB.MaxIdlePoolSize,
-		ConnMaxLifetime: config.DB.ConnMaxLifetime,
+		ConnMaxLifetime: config.DB.ConnMaxLifetime * time.Second,
 		Options:         options,
 	})
 	if err != nil {
