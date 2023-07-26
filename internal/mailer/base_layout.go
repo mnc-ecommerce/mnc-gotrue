@@ -106,7 +106,7 @@ func BaseLayout(config *conf.GlobalConfiguration) string {
                     <td class="sm-w-1-3">
                       <div class="sm-ml-5px sm-mr-5px" style="margin-right: 20px; padding: 0">
                         <p style="margin: 0; padding: 0; font-size: 12px; line-height: 20px; color: #E64325"><b>Part of</b></p>
-                        <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/aladinmall-logo.png" alt="MNC logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
+                        <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/aladinmall-logo.png" width="80" alt="MNC logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
                       </div>
                     </td>
                     <td class="sm-w-2-3" style="width: 518px">
