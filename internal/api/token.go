@@ -393,7 +393,7 @@ func (a *API) RefreshTokenGrant(ctx context.Context, w http.ResponseWriter, r *h
 			return terr
 		}
 
-		tokenString, terr = generateAccessToken(tx, user, newToken.SessionId, time.Second*time.Duration(config.JWT.Exp), config.JWT.Secret)
+		tokenString, terr = generateAccessToken(tx, user, newToken.SessionId, time.Second*time.Duration(config.JWT.Exp), config.JWT.Secret, true)
 
 		if terr != nil {
 			return internalServerError("error generating jwt token").WithInternalError(terr)
@@ -678,7 +678,7 @@ func (a *API) PKCE(ctx context.Context, w http.ResponseWriter, r *http.Request) 
 
 }
 
-func generateAccessToken(tx *storage.Connection, user *models.User, sessionId *uuid.UUID, expiresIn time.Duration, secret string) (string, error) {
+func generateAccessToken(tx *storage.Connection, user *models.User, sessionId *uuid.UUID, expiresIn time.Duration, secret string, isRefreshToken bool) (string, error) {
 	aal, amr := models.AAL1.String(), []models.AMREntry{}
 	sid := ""
 	if sessionId != nil {
@@ -699,7 +699,7 @@ func generateAccessToken(tx *storage.Connection, user *models.User, sessionId *u
 		iat  int64
 	)
 
-	if user.UserMetaData["type"] != nil && utilities.StringContains([]string{"BOS", "AMBO"}, user.UserMetaData["type"].(string)) {
+	if isRefreshToken && user.UserMetaData["type"] != nil && utilities.StringContains([]string{"BOS", "AMBO"}, user.UserMetaData["type"].(string)) {
 		role = "service_role"
 		iss = "admin-token"
 		iat = time.Now().Unix()
@@ -753,7 +753,7 @@ func (a *API) issueRefreshToken(ctx context.Context, conn *storage.Connection, u
 			return terr
 		}
 
-		tokenString, terr = generateAccessToken(tx, user, refreshToken.SessionId, time.Second*time.Duration(config.JWT.Exp), config.JWT.Secret)
+		tokenString, terr = generateAccessToken(tx, user, refreshToken.SessionId, time.Second*time.Duration(config.JWT.Exp), config.JWT.Secret, false)
 		if terr != nil {
 			return internalServerError("error generating jwt token").WithInternalError(terr)
 		}
@@ -816,7 +816,7 @@ func (a *API) updateMFASessionAndClaims(r *http.Request, tx *storage.Connection,
 			return err
 		}
 
-		tokenString, terr = generateAccessToken(tx, user, &sessionId, time.Second*time.Duration(config.JWT.Exp), config.JWT.Secret)
+		tokenString, terr = generateAccessToken(tx, user, &sessionId, time.Second*time.Duration(config.JWT.Exp), config.JWT.Secret, false)
 
 		if terr != nil {
 			return internalServerError("error generating jwt token").WithInternalError(terr)
