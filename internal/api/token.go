@@ -248,7 +248,7 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 	appType := []string{}
 	switch {
 	case strings.Contains(originHeader, "bos"):
-		appType = []string{"BOS", "BOS_LEAD", "BOS_ADMIN", "BOS_USER", "BOS"}
+		appType = []string{"BOS", "BOS_LEAD", "BOS_ADMIN", "BOS_USER"}
 	case strings.Contains(originHeader, "seller"):
 		appType = []string{"MOCA", "AMBO"}
 	case r.FormValue("app") != "":
@@ -258,6 +258,12 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 		(user.UserMetaData["type"] == nil ||
 			(user.UserMetaData["type"] != nil && !utilities.StringContains(appType, user.UserMetaData["type"].(string)))) {
 		return oauthError("invalid_grant", InvalidLoginMessage)
+	}
+
+	if config.SiteURL == originHeader && len(appType) == 0 {
+		if user.UserMetaData["type"] != nil && user.UserMetaData["type"] != "" {
+			return oauthError("invalid_grant", InvalidLoginMessage)
+		}
 	}
 
 	if user.IsBanned() || (!user.Authenticate(params.Password)) {
