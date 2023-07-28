@@ -164,7 +164,7 @@ func (a *API) UserUpdate(w http.ResponseWriter, r *http.Request) error {
 
 		var identities []models.Identity
 		if params.Email != "" && params.Email != user.GetEmail() {
-			if user.GetEmail() == "" {
+			if user.GetEmail() == "" && user.GetEmailChange() == "" {
 				// if the user doesn't have an existing email
 				// then updating the user's email should create a new email identity
 				identity, terr := a.createNewIdentity(tx, user, "email", structs.Map(provider.Claims{

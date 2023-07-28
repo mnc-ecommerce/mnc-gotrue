@@ -159,6 +159,10 @@ func (u *User) GetEmail() string {
 	return string(u.Email)
 }
 
+func (u *User) GetEmailChange() string {
+	return string(u.EmailChange)
+}
+
 // GetPhone returns the user's phone number as a string
 func (u *User) GetPhone() string {
 	return string(u.Phone)
