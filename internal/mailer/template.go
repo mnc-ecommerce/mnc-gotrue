@@ -52,23 +52,16 @@ const defaultInviteMail = `
 `
 
 const defaultConfirmationMail = `
-<div class="sm-w-280px" style="margin-bottom: 8px; height: auto; width: 620px; background-color: #F5F5F5">
-<div class="sm-pl-5px" style="display: block; padding-left: 20px">
-<p>Follow this link to confirm your email:</p>
-<p><a href="{{ .ConfirmationURL }}">Confirm your email address</a></p>
-<p>Alternatively, enter the code: {{ .Token }}</p>
-</div>
-</div>
+<p>Berikut adalah kode OTP Anda untuk mengakses akun Anda::</p>
+<p style="border-width:3px; border-style:solid; border-color:#FF0000; padding: 1em;"><strong>{{ .Token }}</strong></p>
 `
 
 const defaultRecoveryMail = `
-<div class="sm-w-280px" style="margin-bottom: 8px; height: auto; width: 620px; background-color: #F5F5F5">
-<div class="sm-pl-5px" style="display: block; padding-left: 20px">
-<p>Follow this link to reset the password for your user:</p>
-<p><a href="{{ .ConfirmationURL }}">Reset password</a></p>
-<p>Alternatively, enter the code: {{ .Token }}</p>
-</div>
-</div>
+<p>Kami menerima permintaan reset password untuk akun Anda. Kami memahami betapa pentingnya keamanan akun Anda, dan kami siap membantu Anda mereset password dengan cepat dan mudah.</p>
+<p>Silakan masukkan kode di bawah ini untuk mereset password Anda:</p>
+<p style="border-width:3px; border-style:solid; border-color:#FF0000; padding: 1em;"><strong>{{ .Token }}</strong></p>
+<p>Jika Anda tidak merasa melakukan permintaan reset password ini, silakan abaikan email ini.</p>
+<p>Jika Anda mengalami kesulitan dalam mereset password Anda atau memiliki pertanyaan lainnya, jangan ragu untuk menghubungi tim dukungan kami di cs-aladinmall@misteraladin.com atau hubungi kami di nomor Whatsapp +62 811 113 8080.</p>
 `
 
 const defaultMagicLinkMail = `
@@ -82,21 +75,12 @@ const defaultMagicLinkMail = `
 `
 
 const defaultEmailChangeMail = `
-<div class="sm-w-280px" style="margin-bottom: 8px; height: auto; width: 620px; background-color: #F5F5F5">
-<div class="sm-pl-5px" style="display: block; padding-left: 20px">
-<p>Follow this link to confirm the update of your email address from {{ .Email }} to {{ .NewEmail }}:</p>
-<p><a href="{{ .ConfirmationURL }}">Change email address</a></p>
-<p>Alternatively, enter the code: {{ .Token }}</p>
-</div>
-</div>
+<p>Confirm the update of your email address from {{ .Email }} to {{ .NewEmail }}:</p>
+<p style="border-width:3px; border-style:solid; border-color:#FF0000; padding: 1em;"><strong>{{ .Token }}</strong></p>
 `
 
 const defaultReauthenticateMail = `
-<div class="sm-w-280px" style="margin-bottom: 8px; height: auto; width: 620px; background-color: #F5F5F5">
-<div class="sm-pl-5px" style="display: block; padding-left: 20px">
-<p>Enter the code: {{ .Token }}</p>
-</div>
-</div>
+<p style="border-width:3px; border-style:solid; border-color:#FF0000; padding: 1em;"><strong>{{ .Token }}</strong></p>
 `
 
 const defaultSuccessRegisterMail = `
