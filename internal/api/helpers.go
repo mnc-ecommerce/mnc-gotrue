@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/http/httptrace"
 	"net/url"
+	"strings"
 
 	"github.com/gofrs/uuid"
 	"github.com/pkg/errors"
@@ -100,6 +101,29 @@ func isRedirectURLValid(config *conf.GlobalConfiguration, redirectURL string) bo
 	// For case when user came from mobile app or other permitted resource - redirect back
 	for _, pattern := range config.URIAllowListMap {
 		if pattern.Match(redirectURL) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func isRedirectURLValidPath(config *conf.GlobalConfiguration, redirectURL string) bool {
+	if redirectURL == "" {
+		return false
+	}
+
+	base, berr := url.Parse(config.SiteURL)
+	refurl, rerr := url.Parse(redirectURL)
+
+	// As long as the referrer came from the site, we will redirect back there
+	if berr == nil && rerr == nil && base.Hostname() == refurl.Hostname() {
+		return true
+	}
+
+	// For case when user came from mobile app or other permitted resource - redirect back
+	for _, pattern := range config.URIAllowListMap {
+		if pattern.Match(trimURLAfterQuestionMark(redirectURL)) {
 			return true
 		}
 	}
@@ -228,4 +252,10 @@ func isStringInSlice(checkValue string, list []string) bool {
 // getBodyBytes returns a byte array of the request's Body.
 func getBodyBytes(req *http.Request) ([]byte, error) {
 	return utilities.GetBodyBytes(req)
+}
+
+func trimURLAfterQuestionMark(url string) string {
+	parts := strings.Split(url, "?")
+	trimmedURL := parts[0]
+	return trimmedURL
 }

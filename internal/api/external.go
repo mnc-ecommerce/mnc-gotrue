@@ -66,9 +66,12 @@ func (a *API) ExternalProviderRedirect(w http.ResponseWriter, r *http.Request) e
 		}
 	}
 
-	// disable ability to send param redirect_to : query.Get("redirect_to")
-	redirectURL := a.getRedirectURLOrReferrer(r, config.SiteURL)
-	query.Set("redirect_to", config.SiteURL)
+	// validate only allowed url on redirect_to param
+	if query.Get("redirect_to") != "" && !isRedirectURLValidPath(a.config, query.Get("redirect_to")) {
+		return badRequestError("Unallowed redirect to param")
+	}
+
+	redirectURL := a.getRedirectURLOrReferrer(r, query.Get("redirect_to"))
 	log := observability.GetLogEntry(r)
 	log.WithField("provider", providerType).Info("Redirecting to external provider")
 	if err := validatePKCEParams(codeChallengeMethod, codeChallenge); err != nil {
