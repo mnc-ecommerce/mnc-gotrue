@@ -52,7 +52,7 @@ const defaultInviteMail = `
 `
 
 const defaultConfirmationMail = `
-<p>Berikut adalah kode OTP Anda untuk mengakses akun Anda::</p>
+<p>Berikut adalah kode OTP Anda untuk mengakses akun Anda:</p>
 <p style="border-width:3px; border-style:solid; border-color:#FF0000; padding: 1em;"><strong>{{ .Token }}</strong></p>
 `
 
