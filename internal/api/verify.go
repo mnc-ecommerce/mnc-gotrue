@@ -233,6 +233,12 @@ func (a *API) verifyPost(w http.ResponseWriter, r *http.Request) error {
 		if terr != nil {
 			return terr
 		}
+
+		user.UserMetaData["customer"] = true
+		if uerr := user.UpdateUserMetaData(tx, user.UserMetaData); uerr != nil {
+			return uerr
+		}
+
 		token, terr = a.issueRefreshToken(ctx, tx, user, models.OTP, grantParams)
 		if terr != nil {
 			return terr
