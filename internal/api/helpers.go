@@ -113,6 +113,10 @@ func isRedirectURLValidPath(config *conf.GlobalConfiguration, redirectURL string
 		return false
 	}
 
+	if config.AndroidSiteURL == redirectURL || config.IosSiteURL == redirectURL {
+		return false
+	}
+
 	base, berr := url.Parse(config.SiteURL)
 	refurl, rerr := url.Parse(redirectURL)
 
