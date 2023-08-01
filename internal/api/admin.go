@@ -325,7 +325,9 @@ func (a *API) adminUserCreate(w http.ResponseWriter, r *http.Request) error {
 		if user, err := models.IsDuplicatedEmail(db, params.Email, aud, nil); err != nil {
 			return internalServerError("Database error checking email").WithInternalError(err)
 		} else if user != nil {
-			if user.UserMetaData["type"] != nil && !utilities.StringContains([]string{"BOS", "AMBO", "MOCA"}, user.UserMetaData["type"].(string)) {
+			if user.UserMetaData["customer"] != nil && user.UserMetaData["customer"] == true ||
+				user.UserMetaData["type"] == nil ||
+				user.UserMetaData["type"] != nil && !utilities.StringContains([]string{"BOS", "AMBO", "MOCA"}, user.UserMetaData["type"].(string)) {
 				emailExist = true
 			} else {
 				return unprocessableEntityError(DuplicateEmailMsg)
