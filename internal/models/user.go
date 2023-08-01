@@ -190,6 +190,19 @@ func (u *User) UpdateUserMetaData(tx *storage.Connection, updates map[string]int
 	return tx.UpdateOnly(u, "raw_user_meta_data")
 }
 
+func (u *User) MergeUserMetaData(tx *storage.Connection, updates map[string]interface{}) error {
+	if u.UserMetaData == nil {
+		u.UserMetaData = updates
+	} else {
+		for key, value := range updates {
+			if value != nil {
+				u.UserMetaData[key] = value
+			}
+		}
+	}
+	return tx.UpdateOnly(u, "raw_user_meta_data")
+}
+
 // UpdateAppMetaData updates all app data from a map of updates
 func (u *User) UpdateAppMetaData(tx *storage.Connection, updates map[string]interface{}) error {
 	if u.AppMetaData == nil {

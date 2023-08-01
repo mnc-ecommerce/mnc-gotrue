@@ -315,7 +315,6 @@ func (a *API) adminUserCreate(w http.ResponseWriter, r *http.Request) error {
 		return unprocessableEntityError("Cannot create a user without either an email or phone")
 	}
 
-	var emailExist bool
 	var providers []string
 	if params.Email != "" {
 		params.Email, err = validateEmail(params.Email)
@@ -328,7 +327,12 @@ func (a *API) adminUserCreate(w http.ResponseWriter, r *http.Request) error {
 			if user.UserMetaData["customer"] != nil && user.UserMetaData["customer"] == true ||
 				user.UserMetaData["type"] == nil ||
 				user.UserMetaData["type"] != nil && !utilities.StringContains([]string{"BOS", "AMBO", "MOCA"}, user.UserMetaData["type"].(string)) {
-				emailExist = true
+				if params.UserMetaData != nil {
+					if terr := user.MergeUserMetaData(db, params.UserMetaData); terr != nil {
+						return internalServerError("Database error updating metadata").WithInternalError(terr)
+					}
+					return sendJSON(w, http.StatusOK, user)
+				}
 			} else {
 				return unprocessableEntityError(DuplicateEmailMsg)
 			}
@@ -370,15 +374,6 @@ func (a *API) adminUserCreate(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	err = db.Transaction(func(tx *storage.Connection) error {
-		if emailExist {
-			if params.UserMetaData != nil {
-				if terr := user.UpdateUserMetaData(tx, params.UserMetaData); terr != nil {
-					return terr
-				}
-				return nil
-			}
-		}
-
 		if terr := tx.Create(user); terr != nil {
 			return terr
 		}
