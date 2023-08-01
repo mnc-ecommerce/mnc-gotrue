@@ -46,6 +46,7 @@ type AccessTokenResponse struct {
 	User                 *models.User `json:"user"`
 	ProviderAccessToken  string       `json:"provider_token,omitempty"`
 	ProviderRefreshToken string       `json:"provider_refresh_token,omitempty"`
+	IsBackoffice         bool         `json:"is_backoffice"`
 }
 
 // AsRedirectURL encodes the AccessTokenResponse as a redirect URL that
@@ -769,12 +770,18 @@ func (a *API) issueRefreshToken(ctx context.Context, conn *storage.Connection, u
 		return nil, err
 	}
 
+	isBackoffice := true
+	if user.UserMetaData["type"] != nil {
+		isBackoffice = true
+	}
+
 	return &AccessTokenResponse{
 		Token:        tokenString,
 		TokenType:    "bearer",
 		ExpiresIn:    config.JWT.Exp,
 		RefreshToken: refreshToken.Token,
 		User:         user,
+		IsBackoffice: isBackoffice,
 	}, nil
 }
 

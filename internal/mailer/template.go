@@ -65,13 +65,8 @@ const defaultRecoveryMail = `
 `
 
 const defaultMagicLinkMail = `
-<div class="sm-w-280px" style="margin-bottom: 8px; height: auto; width: 620px; background-color: #F5F5F5">
-<div class="sm-pl-5px" style="display: block; padding-left: 20px">
-<p>Follow this link to login:</p>
-<p><a href="{{ .ConfirmationURL }}">Log In</a></p>
-<p>Alternatively, enter the code: {{ .Token }}</p>
-</div>
-</div>
+<p>Berikut adalah kode OTP Anda untuk mengakses akun Anda:</p>
+<p style="border-width:3px; border-style:solid; border-color:#FF0000; padding: 1em;"><strong>{{ .Token }}</strong></p>
 `
 
 const defaultEmailChangeMail = `

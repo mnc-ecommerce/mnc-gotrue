@@ -16,6 +16,7 @@ import (
 	"github.com/supabase/gotrue/internal/models"
 	"github.com/supabase/gotrue/internal/observability"
 	"github.com/supabase/gotrue/internal/storage"
+	"github.com/supabase/gotrue/internal/utilities"
 )
 
 type AdminUserParams struct {
@@ -314,6 +315,7 @@ func (a *API) adminUserCreate(w http.ResponseWriter, r *http.Request) error {
 		return unprocessableEntityError("Cannot create a user without either an email or phone")
 	}
 
+	var emailExist bool
 	var providers []string
 	if params.Email != "" {
 		params.Email, err = validateEmail(params.Email)
@@ -323,7 +325,11 @@ func (a *API) adminUserCreate(w http.ResponseWriter, r *http.Request) error {
 		if user, err := models.IsDuplicatedEmail(db, params.Email, aud, nil); err != nil {
 			return internalServerError("Database error checking email").WithInternalError(err)
 		} else if user != nil {
-			return unprocessableEntityError(DuplicateEmailMsg)
+			if user.UserMetaData["type"] != nil && !utilities.StringContains([]string{"BOS", "AMBO", "MOCA"}, user.UserMetaData["type"].(string)) {
+				emailExist = true
+			} else {
+				return unprocessableEntityError(DuplicateEmailMsg)
+			}
 		}
 		providers = append(providers, "email")
 	}
@@ -362,6 +368,15 @@ func (a *API) adminUserCreate(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	err = db.Transaction(func(tx *storage.Connection) error {
+		if emailExist {
+			if params.UserMetaData != nil {
+				if terr := user.UpdateUserMetaData(tx, params.UserMetaData); terr != nil {
+					return terr
+				}
+				return nil
+			}
+		}
+
 		if terr := tx.Create(user); terr != nil {
 			return terr
 		}
