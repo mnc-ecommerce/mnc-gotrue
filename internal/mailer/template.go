@@ -58,7 +58,11 @@ const defaultConfirmationMail = `
 
 const defaultRecoveryMail = `
 <p>Kami menerima permintaan reset password untuk akun Anda. Kami memahami betapa pentingnya keamanan akun Anda, dan kami siap membantu Anda mereset password dengan cepat dan mudah.</p>
-<p>Silakan masukkan kode di bawah ini untuk mereset password Anda:</p>
+<p>Silakan klik tautan di bawah ini untuk mereset password Anda:</p>
+<div style="background: #F5F5F5;padding: 1em;">
+<p><a href="{{ .ConfirmationURL }}">{{ .ConfirmationURL }}</a></p>
+</div>
+<p>Atau masukkan kode di bawah ini untuk mereset password Anda:</p>
 <p><div style="border-width:3px; border-style:solid; border-color:#FF0000; padding: 1em; display: inline-block;"><strong>{{ .Token }}</strong></div></p>
 <p>Jika Anda tidak merasa melakukan permintaan reset password ini, silakan abaikan email ini.</p>
 <p>Jika Anda mengalami kesulitan dalam mereset password Anda atau memiliki pertanyaan lainnya, jangan ragu untuk menghubungi tim dukungan kami di cs-aladinmall@misteraladin.com atau hubungi kami di nomor Whatsapp +62 811 113 8080.</p>
