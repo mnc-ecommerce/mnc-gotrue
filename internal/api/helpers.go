@@ -140,7 +140,7 @@ func (a *API) getReferrer(r *http.Request) string {
 
 	// try get redirect url from query or post data first
 	reqref := getRedirectTo(r)
-	if isRedirectURLValid(config, reqref) {
+	if isRedirectURLValidPath(config, reqref) {
 		return reqref
 	}
 
