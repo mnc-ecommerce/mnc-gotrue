@@ -11,6 +11,7 @@ import (
 	"github.com/supabase/gotrue/internal/models"
 	"github.com/supabase/gotrue/internal/observability"
 	"github.com/supabase/gotrue/internal/storage"
+	"github.com/supabase/gotrue/internal/utilities"
 )
 
 // UserUpdateParams parameters for updating a user
@@ -109,6 +110,10 @@ func (a *API) UserUpdate(w http.ResponseWriter, r *http.Request) error {
 		if params.Password != nil {
 			if len(*params.Password) < config.PasswordMinLength {
 				return invalidPasswordLengthError(config.PasswordMinLength)
+			}
+
+			if err := utilities.ValidatePassword(*params.Password); err != "" {
+				return unprocessableEntityError(err)
 			}
 
 			isPasswordUpdated := false

@@ -201,6 +201,10 @@ func (a *API) adminUserUpdate(w http.ResponseWriter, r *http.Request) error {
 				return invalidPasswordLengthError(config.PasswordMinLength)
 			}
 
+			if err := utilities.ValidatePassword(*params.Password); err != "" {
+				return unprocessableEntityError(err)
+			}
+
 			if terr := user.UpdatePassword(tx, *params.Password); terr != nil {
 				return terr
 			}
@@ -359,6 +363,12 @@ func (a *API) adminUserCreate(w http.ResponseWriter, r *http.Request) error {
 			return internalServerError("Error generating password").WithInternalError(err)
 		}
 		params.Password = &password
+	}
+
+	if params.Password != nil {
+		if err := utilities.ValidatePassword(*params.Password); err != "" {
+			return unprocessableEntityError(err)
+		}
 	}
 
 	user, err := models.NewUser(params.Phone, params.Email, *params.Password, aud, params.UserMetaData)

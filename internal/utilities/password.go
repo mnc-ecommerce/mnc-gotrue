@@ -11,8 +11,7 @@ func ValidatePassword(password string) string {
 	specialCharRegex := regexp.MustCompile(`[^\w\s]`)
 
 	if !uppercaseRegex.MatchString(password) {
-		// temporary disable to migrate process
-		//return "password must contain at least one uppercase letter"
+		return "password must contain at least one uppercase letter"
 	}
 
 	if !lowercaseRegex.MatchString(password) {
@@ -20,8 +19,7 @@ func ValidatePassword(password string) string {
 	}
 
 	if !numberRegex.MatchString(password) {
-		// temporary disable to migrate process
-		//return "password must contain at least one numeric digit"
+		return "password must contain at least one numeric digit"
 	}
 
 	if !specialCharRegex.MatchString(password) {
