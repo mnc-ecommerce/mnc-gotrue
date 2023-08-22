@@ -64,7 +64,7 @@ func BaseLayout(config *conf.GlobalConfiguration) string {
         <tr>
           <td style="width: 800px; max-width: 100%">
             <div style="margin-top: 16px; text-align: center">
-              <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/public/email/AladinMall.png" alt="aladinmall logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0">
+              <img src="https://api-staging.aladinmall.id/storage/v1/object/public/web/public/email/AladinMall.png" alt="aladinmall logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0">
             </div>
           </td>
         </tr>
@@ -98,7 +98,7 @@ func BaseLayout(config *conf.GlobalConfiguration) string {
                     kami lagi. Kami akan sangat merindukan kehadiran Anda, tetapi kami menghormati keputusan Anda.
                     Terima kasih.</p>
                   <div style="margin-bottom: 12px; width: fit-content">
-                    <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/public/email/Rectangle-Body.png" alt="horizontal line" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
+                    <img src="https://api-staging.aladinmall.id/storage/v1/object/public/web/public/email/Rectangle-Body.png" alt="horizontal line" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
                   </div>
                 </div>
                 <table align="center" style="margin-bottom: 40px; margin-left: auto; margin-right: auto" cellpadding="0" cellspacing="0" role="presentation">
@@ -106,7 +106,7 @@ func BaseLayout(config *conf.GlobalConfiguration) string {
                     <td class="sm-w-1-3">
                       <div class="sm-ml-5px sm-mr-5px" style="margin-right: 20px; padding: 0">
                         <p style="margin: 0; padding: 0; font-size: 12px; line-height: 20px; color: #E64325"><b>Part of</b></p>
-                        <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/aladinmall-logo.png" width="80" alt="MNC logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
+                        <img src="https://api-staging.aladinmall.id/storage/v1/object/public/web/aladinmall-logo.png" width="80" alt="MNC logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
                       </div>
                     </td>
                     <td class="sm-w-2-3" style="width: 518px">
@@ -141,22 +141,22 @@ func BaseLayout(config *conf.GlobalConfiguration) string {
               <tr>
                 <td style="width: 22px; max-width: 100%; padding-right: 27px; text-align: center">
                   <a href="https://www.tiktok.com/@aladinmall" target="_blank">
-                    <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/public/email/Tiktok.png" alt="tiktok logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
+                    <img src="https://api-staging.aladinmall.id/storage/v1/object/public/web/public/email/Tiktok.png" alt="tiktok logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
                   </a>
                 </td>
                 <td style="width: 22px; max-width: 100%; padding-right: 27px; text-align: center;">
                   <a href="https://www.facebook.com/aladinmall.id" target="_blank">
-                    <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/public/email/Facebook.png" alt="facebook logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
+                    <img src="https://api-staging.aladinmall.id/storage/v1/object/public/web/public/email/Facebook.png" alt="facebook logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
                   </a>
                 </td>
                 <td style="width: 22px; max-width: 100%; padding-right: 27px; text-align: center;">
                   <a href="https://www.youtube.com/@aladinmall" target="_blank">
-                    <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/public/email/Youtube.png" alt="youtube logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
+                    <img src="https://api-staging.aladinmall.id/storage/v1/object/public/web/public/email/Youtube.png" alt="youtube logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
                   </a>
                 </td>
                 <td style="width: 22px; max-width: 100%; text-align: center;">
                   <a href="https://www.instagram.com/aladinmall.id/" target="_blank">
-                    <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/public/email/Instagram.png" alt="instagram logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
+                    <img src="https://api-staging.aladinmall.id/storage/v1/object/public/web/public/email/Instagram.png" alt="instagram logo" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
                   </a>
                 </td>
               </tr>
@@ -174,7 +174,7 @@ func BaseLayout(config *conf.GlobalConfiguration) string {
         <tr>
           <td class="sm-w-320px" style="width: 800px; max-width: 100%">
             <div style="margin-bottom: 30px; margin-top: 30px; width: 100%;">
-              <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/public/email/Rectangle-Footer.png" alt="horizontal line" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
+              <img src="https://api-staging.aladinmall.id/storage/v1/object/public/web/public/email/Rectangle-Footer.png" alt="horizontal line" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
             </div>
           </td>
         </tr>
@@ -191,7 +191,7 @@ func BaseLayout(config *conf.GlobalConfiguration) string {
         <tr>
           <td class="sm-w-320px" style="width: 800px; max-width: 100%">
             <div style="margin-bottom: 30px; margin-top: 30px; width: 100%;">
-              <img src="https://user-api-stg.aladinmall.id/storage/v1/object/public/web/public/email/Rectangle-Footer.png" alt="horizontal line" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
+              <img src="https://api-staging.aladinmall.id/storage/v1/object/public/web/public/email/Rectangle-Footer.png" alt="horizontal line" style="max-width: 100%; vertical-align: middle; line-height: 1; border: 0;">
             </div>
           </td>
         </tr>
