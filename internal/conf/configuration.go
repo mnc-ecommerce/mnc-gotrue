@@ -206,7 +206,7 @@ type SmsProviderConfiguration struct {
 	Textlocal     TextlocalProviderConfiguration     `json:"textlocal"`
 	Vonage        VonageProviderConfiguration        `json:"vonage"`
 	FlashMobile   FlashMobileProviderConfiguration   `json:"flashmobile"`
-	FlashMobileV3 FlashMobileV3ProviderConfiguration `json:"flashmobilev3"`
+	FlashMobileV3 FlashMobileV3ProviderConfiguration `json:"flashmobilev3" split_words:"true"`
 }
 
 type TwilioProviderConfiguration struct {
