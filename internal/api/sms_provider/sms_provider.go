@@ -41,6 +41,8 @@ func GetSmsProvider(config conf.GlobalConfiguration) (SmsProvider, error) {
 		return NewVonageProvider(config.Sms.Vonage)
 	case "flashmobile":
 		return NewFlashMobileProvider(config.Sms.FlashMobile)
+	case "flashmobilev3":
+		return NewFlashMobileV3Provider(config.Sms.FlashMobileV3)
 	default:
 		return nil, fmt.Errorf("sms Provider %s could not be found", name)
 	}
