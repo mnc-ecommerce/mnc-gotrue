@@ -195,17 +195,18 @@ type PhoneProviderConfiguration struct {
 }
 
 type SmsProviderConfiguration struct {
-	Autoconfirm  bool                             `json:"autoconfirm"`
-	MaxFrequency time.Duration                    `json:"max_frequency" split_words:"true"`
-	OtpExp       uint                             `json:"otp_exp" split_words:"true"`
-	OtpLength    int                              `json:"otp_length" split_words:"true"`
-	Provider     string                           `json:"provider"`
-	Template     string                           `json:"template"`
-	Twilio       TwilioProviderConfiguration      `json:"twilio"`
-	Messagebird  MessagebirdProviderConfiguration `json:"messagebird"`
-	Textlocal    TextlocalProviderConfiguration   `json:"textlocal"`
-	Vonage       VonageProviderConfiguration      `json:"vonage"`
-	FlashMobile  FlashMobileProviderConfiguration `json:"flashmobile"`
+	Autoconfirm   bool                               `json:"autoconfirm"`
+	MaxFrequency  time.Duration                      `json:"max_frequency" split_words:"true"`
+	OtpExp        uint                               `json:"otp_exp" split_words:"true"`
+	OtpLength     int                                `json:"otp_length" split_words:"true"`
+	Provider      string                             `json:"provider"`
+	Template      string                             `json:"template"`
+	Twilio        TwilioProviderConfiguration        `json:"twilio"`
+	Messagebird   MessagebirdProviderConfiguration   `json:"messagebird"`
+	Textlocal     TextlocalProviderConfiguration     `json:"textlocal"`
+	Vonage        VonageProviderConfiguration        `json:"vonage"`
+	FlashMobile   FlashMobileProviderConfiguration   `json:"flashmobile"`
+	FlashMobileV3 FlashMobileV3ProviderConfiguration `json:"flashMobileV3"`
 }
 
 type TwilioProviderConfiguration struct {
@@ -234,6 +235,12 @@ type FlashMobileProviderConfiguration struct {
 	User    string `json:"user" split_words:"true"`
 	Pass    string `json:"pass" split_words:"true"`
 	Masking string `json:"masking" split_words:"true"`
+}
+
+type FlashMobileV3ProviderConfiguration struct {
+	ClientKey string `json:"client_key" split_words:"true"`
+	ServerKey string `json:"server_key" split_words:"true"`
+	Masking   string `json:"masking" split_words:"true"`
 }
 
 type CaptchaConfiguration struct {
@@ -527,5 +534,19 @@ func (t *FlashMobileProviderConfiguration) Validate() error {
 	if t.Masking == "" {
 		return errors.New("missing Flash Mobile masking")
 	}
+	return nil
+}
+
+func (t *FlashMobileV3ProviderConfiguration) Validate() error {
+	if t.ClientKey == "" {
+		return errors.New("missing FlashMobile Client Key")
+	}
+	if t.ServerKey == "" {
+		return errors.New("missing FlashMobile Server Key")
+	}
+	if t.Masking == "" {
+		return errors.New("missing FlashMobile Masking")
+	}
+
 	return nil
 }
