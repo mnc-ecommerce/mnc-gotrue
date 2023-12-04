@@ -10,7 +10,6 @@ env:
   ECR_REPO: mncgotrue
   S3_BUCKET: s3://am-spin/services/mncgotrue/
 
-
 jobs:
   build:
     runs-on: ubuntu-20.04
