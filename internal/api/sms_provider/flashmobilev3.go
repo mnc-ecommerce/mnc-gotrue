@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	defaultFlashMobileV3ApiBase = "https://sandbox-app.flashmobile.co.id"
+	defaultFlashMobileV3ApiBase = "https://app.flashmobile.co.id"
 	defaultFlashMobileAuthPath  = "/auth/v2/access-token"
 	defaultFlashMobileSMSPath   = "/sms/v1/single"
 )
