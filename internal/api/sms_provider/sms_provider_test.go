@@ -3,15 +3,14 @@ package sms_provider
 import (
 	"encoding/base64"
 	"fmt"
-	"net/http"
-	"net/url"
-	"testing"
-
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"github.com/supabase/gotrue/internal/conf"
 	"gopkg.in/h2non/gock.v1"
+	"net/http"
+	"net/url"
+	"testing"
 )
 
 var handleApiRequest func(*http.Request) (*http.Response, error)
@@ -55,6 +54,11 @@ func TestSmsProvider(t *testing.T) {
 					User:    "test_user",
 					Pass:    "test_pass",
 					Masking: "test_masking",
+				},
+				FlashMobileV3: conf.FlashMobileV3ProviderConfiguration{
+					ClientKey: "FM-0018-1dc3f842668e24872cddab15",
+					ServerKey: "FMPA-edd01c47c0d48e1ee660b4a5d5f401112dbc",
+					Masking:   "test_masking",
 				},
 			},
 		},
@@ -247,5 +251,42 @@ func (ts *SmsProviderTestSuite) TestFlashMobileSendSms() {
 	})
 
 	err = flashMobileProvider.SendSms(phone, message)
+	require.NoError(ts.T(), err)
+}
+
+func (ts *SmsProviderTestSuite) TestFlashMobileV3SendSms() {
+	defer gock.Off()
+	provider, err := NewFlashMobileV3Provider(ts.Config.Sms.FlashMobileV3)
+	require.NoError(ts.T(), err)
+
+	flashMobileProviderV3, ok := provider.(*FlashMobileV3Provider)
+	require.Equal(ts.T(), true, ok)
+
+	phone := "082213770600"
+	message := "This is the sms code: 123456"
+
+	gock.New(flashMobileProviderV3.APIPath).Post(defaultFlashMobileAuthPath).Reply(200).JSON(GeneralFlashMobileV3Response{
+		Status:      200,
+		Message:     "success",
+		Description: "success",
+		Data: FlashMobileToken{
+			Token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDA2MjU1NjksIm1lcmNoYW50X2lkIjoiMTgiLCJtZXJjaGFudF9uYW1lIjoiYWxhZGlubWFsbCIsIm1lcmNoYW50X3V1aWQiOiIwZTcwMDQ3MTAyYzg0Nzg1YTUzY2I5MTMxYmZlZjEwZSJ9.6S0JjrAvopRejJwiiDGZO6KdikQBAoTON8qan--iWp0",
+		},
+		Meta: struct{}{},
+	})
+
+	gock.New(flashMobileProviderV3.APIPath).Post("/sms/v1/single").Reply(200).JSON(GeneralFlashMobileV3Response{
+		Status:      200,
+		Message:     "success",
+		Description: "success",
+		Data: map[string]any{
+			"external_id":    "EXT-1000004",
+			"transaction_id": "FM-ad74e85e661a2e60933e402a5cc",
+			"phone":          "6282213770600",
+		},
+		Meta: struct{}{},
+	})
+
+	err = flashMobileProviderV3.dispatch(phone, message)
 	require.NoError(ts.T(), err)
 }
