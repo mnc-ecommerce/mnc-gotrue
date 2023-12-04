@@ -4,7 +4,7 @@
 
 GoTrue is a user management and authentication server written in Go that powers
 [Supabase](https://supabase.com)'s features such as:
-
+  
 - Issuing JWTs
 - Row Level Security with PostgREST
 - User management
