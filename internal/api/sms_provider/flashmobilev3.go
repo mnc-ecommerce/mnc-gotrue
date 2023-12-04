@@ -95,10 +95,11 @@ func (p *FlashMobileV3Provider) dispatch(phone string, message string) error {
 			"Authorization": "Bearer " + p.token.Token,
 		}
 		request = FlashMobileDispatchRequest{
-			ExternalId:  fmt.Sprintf("%d", time.Now().Unix()),
-			Text:        message,
-			Phone:       phone,
-			Sender:      p.Config.Masking,
+			ExternalId: fmt.Sprintf("%d", time.Now().Unix()),
+			Text:       message,
+			Phone:      phone,
+			//Sender:      p.Config.Masking,
+			Sender:      "MR ALADIN",
 			CallbackUrl: "https://aladinmall.id",
 		}
 	)
